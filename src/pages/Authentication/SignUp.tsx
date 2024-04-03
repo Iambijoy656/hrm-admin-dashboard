@@ -24,23 +24,22 @@ const SignUp: React.FC = () => {
       return toast.error("Password and Confirm password does not match");
     }
 
-    const signupData = {
+    const userData = {
       name: data.name,
       email: data.email,
       student_id: data.student_id,
       password: data.password
     }
-    console.log('signupData', signupData);
     api
-      .post("/signup", signupData)
-      .then((res) => {
+      .post("/create-student", userData)
+      .then((res: any) => {
         console.log(res);
         if (res.status === 200) {
-          toast.success("SignUp complete Successfully");
+          toast.success("Create User Successfully");
           reset()
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(err);
         toast.error("Please try again");
       });

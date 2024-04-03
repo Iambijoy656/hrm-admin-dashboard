@@ -64,13 +64,12 @@ const TableThree = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      packageItem.status === 'Paid'
+                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === 'Paid'
                         ? 'bg-success text-success'
                         : packageItem.status === 'Unpaid'
-                        ? 'bg-danger text-danger'
-                        : 'bg-warning text-warning'
-                    }`}
+                          ? 'bg-danger text-danger'
+                          : 'bg-warning text-warning'
+                      }`}
                   >
                     {packageItem.status}
                   </p>

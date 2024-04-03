@@ -15,6 +15,10 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Login from './pages/Login/Login';
+import Users from './pages/Users/Users';
+import Students from './pages/Students/Students';
+import Admins from './pages/Admins/Admins';
+import Teachers from './pages/Teachers/Teachers';
 
 
 function App() {
@@ -79,6 +83,45 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path="/users/all-users"
+          element={
+            <>
+              <PageTitle title="Users | All Users" />
+              <Users />
+            </>
+          }
+        />
+
+        <Route
+          path="/users/students"
+          element={
+            <>
+              <PageTitle title="Users | Students" />
+              <Students />
+            </>
+          }
+        />
+        <Route
+          path="/users/teachers"
+          element={
+            <>
+              <PageTitle title="Users | Teachers" />
+              <Teachers />
+            </>
+          }
+        />
+        <Route
+          path="/users/admins"
+          element={
+            <>
+              <PageTitle title="Users | Admins" />
+              <Admins />
+            </>
+          }
+        />
+
         <Route
           path="/tables"
           element={
