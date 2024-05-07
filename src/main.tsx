@@ -9,14 +9,13 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { Toaster } from 'react-hot-toast';
 
 
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>
       <Toaster
         position="top-center"
       />
-
-
       <App />
     </Router>
   </React.StrictMode>,

@@ -1,84 +1,117 @@
+import { useEffect, useState } from 'react';
+import api from '../../Utilities/api';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { Package } from '../../types/package';
+import { Teacher } from '../../types/student';
+import { Link } from 'react-router-dom';
+
+
 
 const Teachers = () => {
-    const packageData: Package[] = [
-        {
-            name: 'Free package',
-            price: 0.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Paid',
-        },
-        {
-            name: 'Standard Package',
-            price: 59.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Paid',
-        },
-        {
-            name: 'Business Package',
-            price: 99.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Unpaid',
-        },
-        {
-            name: 'Standard Package',
-            price: 59.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Pending',
-        },
-    ];
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await api.get("/get-all-teacher");
+                setTeachers(res?.data)
+
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    console.log('teachers', teachers);
+
+
     return (
         <>
 
             <DefaultLayout>
                 <Breadcrumb pageName="Teachers" />
+
+
+
+                <div className='flex items-center mb-5'>
+                    <Link to={'/create-teacher'}
+                        className=" rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90 w-44"
+
+                    >
+                        Create Teacher
+                    </Link>
+
+                    <fieldset className="w-full space-y-1 dark:text-gray-100 my-3 md:flex md:justify-end">
+
+                        <label htmlFor="Search" className="hidden">Search</label>
+                        <div className="relative">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                                <button type="button" title="search" className="p-1 focus:outline-none focus:ring">
+                                    <svg fill="currentColor" viewBox="0 0 512 512" className="w-4 h-4 dark:text-gray-100">
+                                        <path d="M479.6,399.716l-81.084-81.084-62.368-25.767A175.014,175.014,0,0,0,368,192c0-97.047-78.953-176-176-176S16,94.953,16,192,94.953,368,192,368a175.034,175.034,0,0,0,101.619-32.377l25.7,62.2L400.4,478.911a56,56,0,1,0,79.2-79.195ZM48,192c0-79.4,64.6-144,144-144s144,64.6,144,144S271.4,336,192,336,48,271.4,48,192ZM456.971,456.284a24.028,24.028,0,0,1-33.942,0l-76.572-76.572-23.894-57.835L380.4,345.771l76.573,76.572A24.028,24.028,0,0,1,456.971,456.284Z"></path>
+                                    </svg>
+                                </button>
+                            </span>
+                            <input type="search" name="Search" placeholder="Search..." className="w-full md:w-36 py-2 pl-10 text-sm rounded-md sm:w-auto focus:outline-none  dark:bg-boxdark dark:text-gray-100 focus:dark:bg-gray-900 border focus:dark:border-white" />
+                        </div>
+                    </fieldset>
+                </div>
                 <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
                     <div className="max-w-full overflow-x-auto">
                         <table className="w-full table-auto">
                             <thead>
                                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
                                     <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        Package
+                                        Name
                                     </th>
                                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                                        Invoice date
+                                        Email
                                     </th>
-                                    <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                                        Status
+                                    <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                                        Teacher ID
                                     </th>
+
+                                    {/* <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                                    Status
+                                </th> */}
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {packageData.map((packageItem, key) => (
+                                {teachers.map((teacher, key) => (
                                     <tr key={key}>
                                         <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                             <h5 className="font-medium text-black dark:text-white">
-                                                {packageItem.name}
+                                                {teacher?.name}
                                             </h5>
-                                            <p className="text-sm">${packageItem.price}</p>
+                                            {/* <p className="text-sm">${packageItem.price}</p> */}
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <p className="text-black dark:text-white">
-                                                {packageItem.invoiceDate}
+                                                {teacher?.user?.email}
                                             </p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                            <p
-                                                className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === 'Paid'
-                                                    ? 'bg-success text-success'
-                                                    : packageItem.status === 'Unpaid'
-                                                        ? 'bg-danger text-danger'
-                                                        : 'bg-warning text-warning'
-                                                    }`}
-                                            >
-                                                {packageItem.status}
+                                            <p className="text-black dark:text-white">
+                                                {teacher?.user?.card_id}
                                             </p>
                                         </td>
+                                        {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                        <p
+                                            className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === 'Paid'
+                                                ? 'bg-success text-success'
+                                                : packageItem.status === 'Unpaid'
+                                                    ? 'bg-danger text-danger'
+                                                    : 'bg-warning text-warning'
+                                                }`}
+                                        >
+                                            {packageItem.status}
+                                        </p>
+                                    </td> */}
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <div className="flex items-center space-x-3.5">
                                                 <button className="hover:text-primary">
@@ -127,25 +160,25 @@ const Teachers = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button className="hover:text-primary">
-                                                    <svg
-                                                        className="fill-current"
-                                                        width="18"
-                                                        height="18"
-                                                        viewBox="0 0 18 18"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M16.8754 11.6719C16.5379 11.6719 16.2285 11.9531 16.2285 12.3187V14.8219C16.2285 15.075 16.0316 15.2719 15.7785 15.2719H2.22227C1.96914 15.2719 1.77227 15.075 1.77227 14.8219V12.3187C1.77227 11.9812 1.49102 11.6719 1.12539 11.6719C0.759766 11.6719 0.478516 11.9531 0.478516 12.3187V14.8219C0.478516 15.7781 1.23789 16.5375 2.19414 16.5375H15.7785C16.7348 16.5375 17.4941 15.7781 17.4941 14.8219V12.3187C17.5223 11.9531 17.2129 11.6719 16.8754 11.6719Z"
-                                                            fill=""
-                                                        />
-                                                        <path
-                                                            d="M8.55074 12.3469C8.66324 12.4594 8.83199 12.5156 9.00074 12.5156C9.16949 12.5156 9.31012 12.4594 9.45074 12.3469L13.4726 8.43752C13.7257 8.1844 13.7257 7.79065 13.5007 7.53752C13.2476 7.2844 12.8539 7.2844 12.6007 7.5094L9.64762 10.4063V2.1094C9.64762 1.7719 9.36637 1.46252 9.00074 1.46252C8.66324 1.46252 8.35387 1.74377 8.35387 2.1094V10.4063L5.40074 7.53752C5.14762 7.2844 4.75387 7.31252 4.50074 7.53752C4.24762 7.79065 4.27574 8.1844 4.50074 8.43752L8.55074 12.3469Z"
-                                                            fill=""
-                                                        />
-                                                    </svg>
-                                                </button>
+                                                {/* <button className="hover:text-primary">
+                                                <svg
+                                                    className="fill-current"
+                                                    width="18"
+                                                    height="18"
+                                                    viewBox="0 0 18 18"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M16.8754 11.6719C16.5379 11.6719 16.2285 11.9531 16.2285 12.3187V14.8219C16.2285 15.075 16.0316 15.2719 15.7785 15.2719H2.22227C1.96914 15.2719 1.77227 15.075 1.77227 14.8219V12.3187C1.77227 11.9812 1.49102 11.6719 1.12539 11.6719C0.759766 11.6719 0.478516 11.9531 0.478516 12.3187V14.8219C0.478516 15.7781 1.23789 16.5375 2.19414 16.5375H15.7785C16.7348 16.5375 17.4941 15.7781 17.4941 14.8219V12.3187C17.5223 11.9531 17.2129 11.6719 16.8754 11.6719Z"
+                                                        fill=""
+                                                    />
+                                                    <path
+                                                        d="M8.55074 12.3469C8.66324 12.4594 8.83199 12.5156 9.00074 12.5156C9.16949 12.5156 9.31012 12.4594 9.45074 12.3469L13.4726 8.43752C13.7257 8.1844 13.7257 7.79065 13.5007 7.53752C13.2476 7.2844 12.8539 7.2844 12.6007 7.5094L9.64762 10.4063V2.1094C9.64762 1.7719 9.36637 1.46252 9.00074 1.46252C8.66324 1.46252 8.35387 1.74377 8.35387 2.1094V10.4063L5.40074 7.53752C5.14762 7.2844 4.75387 7.31252 4.50074 7.53752C4.24762 7.79065 4.27574 8.1844 4.50074 8.43752L8.55074 12.3469Z"
+                                                        fill=""
+                                                    />
+                                                </svg>
+                                            </button> */}
                                             </div>
                                         </td>
                                     </tr>

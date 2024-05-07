@@ -27,7 +27,7 @@ const SignUp: React.FC = () => {
     const userData = {
       name: data.name,
       email: data.email,
-      student_id: data.student_id,
+      card_id: data.card_id,
       password: data.password
     }
     api
@@ -273,7 +273,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      {...register("student_id", {
+                      {...register("card_id", {
                         required: "Student ID is required", // Provide a message for the required rule
                       })}
                       type="text"
@@ -299,8 +299,8 @@ const SignUp: React.FC = () => {
                     </svg> */}
                     </span>
                   </div>
-                  {errors.student_id && (
-                    <p className="text-red-500 text-xs mt-1">{errors.student_id.message as React.ReactNode}</p> // Explicitly cast to ReactNode
+                  {errors.card_id && (
+                    <p className="text-red-500 text-xs mt-1">{errors.card_id.message as React.ReactNode}</p> // Explicitly cast to ReactNode
                   )}
                 </div>
 
