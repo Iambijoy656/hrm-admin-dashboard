@@ -1,35 +1,64 @@
+import api from '../../Utilities/api';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { Package } from '../../types/package';
-
+import { useEffect, useState } from 'react';
+import { Student } from '../../types/student';
+import Swal from "sweetalert2";
+import toast from 'react-hot-toast';
 const Students = () => {
+    const [students, setStudents] = useState<Student[]>([]);
+    const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
-    const packageData: Package[] = [
-        {
-            name: 'Free package',
-            price: 0.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Paid',
-        },
-        {
-            name: 'Standard Package',
-            price: 59.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Paid',
-        },
-        {
-            name: 'Business Package',
-            price: 99.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Unpaid',
-        },
-        {
-            name: 'Standard Package',
-            price: 59.0,
-            invoiceDate: `Jan 13,2023`,
-            status: 'Pending',
-        },
-    ];
+    const handleStudentDelete = async (id: string) => {
+        const strId = id.toString()
+        console.log(strId);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#563172",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await api.delete(`/delete-student/${id}`);
+                    if (res.status == 200) {
+                        await Swal.fire({
+                            title: "Deleted!",
+                            text: "student Deleted Successfully.",
+                            icon: "success",
+                        });
+
+                        setIsDeleted(!isDeleted);
+                    }
+                } catch (err) {
+                    console.log(err);
+                    toast.error("Failed to Delete student");
+                }
+            }
+        });
+    };
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await api.get("/get-all-student");
+                setStudents(res?.data)
+
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        fetchData();
+    }, [isDeleted]);
+
+
+
     return (
         <>
 
@@ -73,20 +102,25 @@ const Students = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {packageData.map((packageItem, key) => (
+                                {students.map((student, key) => (
                                     <tr key={key}>
                                         <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                             <h5 className="font-medium text-black dark:text-white">
-                                                {packageItem.name}
+                                                {student?.name}
                                             </h5>
-                                            <p className="text-sm">${packageItem.price}</p>
+                                            {/* <p className="text-sm">${packageItem.price}</p> */}
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <p className="text-black dark:text-white">
-                                                {packageItem.invoiceDate}
+                                                {student?.user?.email}
                                             </p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            <p className="text-black dark:text-white">
+                                                {student?.user?.card_id}
+                                            </p>
+                                        </td>
+                                        {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <p
                                                 className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === 'Paid'
                                                     ? 'bg-success text-success'
@@ -97,7 +131,7 @@ const Students = () => {
                                             >
                                                 {packageItem.status}
                                             </p>
-                                        </td>
+                                        </td> */}
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <div className="flex items-center space-x-3.5">
                                                 <button className="hover:text-primary">
@@ -119,7 +153,10 @@ const Students = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button className="hover:text-primary">
+                                                <button
+                                                    onClick={() => handleStudentDelete(student.id)}
+
+                                                    className="hover:text-primary">
                                                     <svg
                                                         className="fill-current"
                                                         width="18"
@@ -146,7 +183,7 @@ const Students = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button className="hover:text-primary">
+                                                {/* <button className="hover:text-primary">
                                                     <svg
                                                         className="fill-current"
                                                         width="18"
@@ -164,7 +201,7 @@ const Students = () => {
                                                             fill=""
                                                         />
                                                     </svg>
-                                                </button>
+                                                </button> */}
                                             </div>
                                         </td>
                                     </tr>

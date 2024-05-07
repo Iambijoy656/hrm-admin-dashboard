@@ -19,6 +19,7 @@ import Users from './pages/Users/Users';
 import Students from './pages/Students/Students';
 import Admins from './pages/Admins/Admins';
 import Teachers from './pages/Teachers/Teachers';
+import CreateTeacher from './pages/CreateTeacher/CreateTeacher';
 
 
 function App() {
@@ -182,6 +183,15 @@ function App() {
             <>
               <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <SignUp />
+            </>
+          }
+        />
+        <Route
+          path="/create-teacher"
+          element={
+            <>
+              <PageTitle title="Create Teacher | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <CreateTeacher />
             </>
           }
         />
