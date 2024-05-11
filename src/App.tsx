@@ -20,6 +20,9 @@ import Students from './pages/Students/Students';
 import Admins from './pages/Admins/Admins';
 import Teachers from './pages/Teachers/Teachers';
 import CreateTeacher from './pages/CreateTeacher/CreateTeacher';
+import CreateProject from './pages/CreateProject';
+import SubmittedSupervisorList from './pages/SubmittedSupervisorList';
+import SchedulePage from './pages/SchedulePage';
 
 
 function App() {
@@ -119,6 +122,35 @@ function App() {
             <>
               <PageTitle title="Users | Admins" />
               <Admins />
+            </>
+          }
+        />
+        <Route
+          path="/create-project"
+          element={
+            <>
+              <PageTitle title="Project | Create Project" />
+              <CreateProject />
+            </>
+          }
+        />
+
+        <Route
+          path="/submitted-supervisor-list"
+          element={
+            <>
+              <PageTitle title="Supervisor | Submitted Supervisor List" />
+              <SubmittedSupervisorList />
+            </>
+          }
+        />
+
+        <Route
+          path="/schedule"
+          element={
+            <>
+              <PageTitle title="Schedule | schedule" />
+              <SchedulePage />
             </>
           }
         />
