@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import api from '../../Utilities/api';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { Teacher } from '../../types/student';
 import { Link } from 'react-router-dom';
+import { Teacher } from '../../types/teacher';
 
 
 
@@ -32,7 +32,6 @@ const Teachers = () => {
 
             <DefaultLayout>
                 <Breadcrumb pageName="Teachers" />
-
 
 
                 <div className='flex items-center mb-5'>
