@@ -5,9 +5,15 @@ import UserOne from '../../images/user/user-01.png';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+
+  const user: object | null = JSON.parse(localStorage.getItem("user-info") || "{}") as object | null;
+
+  console.log((user as any)?.role);
+
+
 
   // close on click outside
   useEffect(() => {
@@ -43,12 +49,15 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+        {
+          user && Object.keys(user).length > 0 && <span className="hidden text-right lg:block">
+            <span className="block text-sm font-medium text-black dark:text-white capitalize">
+              {(user as any)?.name}
+            </span>
+            <span className="block text-xs capitalize">{(user as any)?.role}</span>
           </span>
-          <span className="block text-xs">UX Designer</span>
-        </span>
+        }
+
 
         <span className="h-12 w-12 rounded-full">
           <img src={UserOne} alt="User" />
@@ -76,9 +85,8 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-          dropdownOpen === true ? 'block' : 'hidden'
-        }`}
+        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? 'block' : 'hidden'
+          }`}
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>

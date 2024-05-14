@@ -112,14 +112,14 @@ const SubmittedSupervisorList = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {/* <tbody>
                             {teachers.map((teacher, key) => (
                                 <tr key={key}>
                                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                         <h5 className="font-medium text-black dark:text-white">
                                             {teacher?.name}
                                         </h5>
-                                        {/* <p className="text-sm">${packageItem.price}</p> */}
+                                        <p className="text-sm">${packageItem.price}</p>
                                     </td>
                                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                         <p className="text-black dark:text-white">
@@ -131,7 +131,7 @@ const SubmittedSupervisorList = () => {
                                             {teacher?.user?.card_id}
                                         </p>
                                     </td>
-                                    {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                         <p
                                             className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === 'Paid'
                                                 ? 'bg-success text-success'
@@ -142,7 +142,7 @@ const SubmittedSupervisorList = () => {
                                         >
                                             {packageItem.status}
                                         </p>
-                                    </td> */}
+                                    </td>
                                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                         <div className="flex items-center space-x-3.5">
                                             <button className="hover:text-primary">
@@ -191,7 +191,7 @@ const SubmittedSupervisorList = () => {
                                                     />
                                                 </svg>
                                             </button>
-                                            {/* <button className="hover:text-primary">
+                                            <button className="hover:text-primary">
                                                 <svg
                                                     className="fill-current"
                                                     width="18"
@@ -209,12 +209,12 @@ const SubmittedSupervisorList = () => {
                                                         fill=""
                                                     />
                                                 </svg>
-                                            </button> */}
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
+                        </tbody> */}
 
                         <tbody>
                             <tr>

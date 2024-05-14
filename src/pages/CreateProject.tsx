@@ -24,7 +24,6 @@ const CreateProject = () => {
             setIsDisabled(!isDisabled)
         }
     };
-    console.log('selectedTeachers', selectedTeachers);
 
 
     useEffect(() => {
@@ -76,7 +75,6 @@ const CreateProject = () => {
         //   });
     }
 
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Create Project" />
@@ -90,6 +88,24 @@ const CreateProject = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5.5 p-6.5">
                     <div>
                         <label className="mb-3 block text-black dark:text-white">
+                            Student Id
+                        </label>
+                        <input
+                            {...register("student_id", {
+                                required: "Student Id is required",
+                            })}
+                            type="text"
+                            placeholder="Title"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-2 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                        {errors.student_id && (
+                            <p className="text-red-500 text-xs mt-1">{errors.student_id.message as React.ReactNode}</p>
+                        )}
+                    </div>
+
+
+                    <div>
+                        <label className="mb-3 block text-black dark:text-white">
                             Title
                         </label>
                         <input
@@ -101,7 +117,7 @@ const CreateProject = () => {
                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-2 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                         {errors.title && (
-                            <p className="text-red-500 text-xs mt-1">{errors.title.message as React.ReactNode}</p> // Explicitly cast to ReactNode
+                            <p className="text-red-500 text-xs mt-1">{errors.title.message as React.ReactNode}</p>
                         )}
                     </div>
                     <div>
