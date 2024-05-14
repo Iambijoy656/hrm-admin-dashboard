@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import api from './../../Utilities/api';
 
 const SignUp: React.FC = () => {
-
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -27,6 +27,7 @@ const SignUp: React.FC = () => {
     const userData = {
       name: data.name,
       email: data.email,
+      role: "student",
       card_id: data.card_id,
       password: data.password
     }
@@ -37,6 +38,7 @@ const SignUp: React.FC = () => {
         if (res.status === 200) {
           toast.success("Create User Successfully");
           reset()
+          navigate('/profile')
         }
       })
       .catch((err: any) => {

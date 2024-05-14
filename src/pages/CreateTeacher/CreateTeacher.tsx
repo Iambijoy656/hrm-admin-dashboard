@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { PiIdentificationCardLight } from "react-icons/pi";
@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import api from './../../Utilities/api';
 
 const CreateTeacher: React.FC = () => {
-
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -25,6 +25,7 @@ const CreateTeacher: React.FC = () => {
         const userData = {
             name: data.name,
             email: data.email,
+            role: "teacher",
             card_id: data.card_id,
             password: data.password
         }
@@ -35,6 +36,7 @@ const CreateTeacher: React.FC = () => {
                 if (res.status === 200) {
                     toast.success("Create User Successfully");
                     reset()
+                    navigate('/users/teachers')
                 }
             })
             .catch((err: any) => {
