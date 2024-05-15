@@ -9,7 +9,7 @@ import makeAnimated from 'react-select/animated';
 import "../css/select.css"
 import { Teacher } from '../types/teacher';
 import { TeacherType } from '../types/selectInputTeacher';
-import { ActionMeta } from 'react-select';
+
 const CreateProject = () => {
     const animatedComponents = makeAnimated();
     const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -26,6 +26,8 @@ const CreateProject = () => {
     };
 
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,7 +41,7 @@ const CreateProject = () => {
 
         fetchData();
     }, []);
-    const allTeachers = teachers.map(teacher => ({ label: teacher.name, value: teacher.id }));
+    let allTeachers = teachers.map(teacher => ({ label: teacher.name, value: teacher.id }));
 
 
 
@@ -52,27 +54,37 @@ const CreateProject = () => {
     } = useForm()
 
     const onSubmit = async (data: any) => {
-        console.log(data);
+        const formData = {
+            student_id: data.student_id,
+            title: data.title,
+            object: data.object,
+            mythology: data.mythology,
+            ppt: data.ppt,
+            status: "pending",
+            supervisor1: selectedTeachers[0]?.label,
+            supervisor2: selectedTeachers[1]?.label,
+            supervisor3: selectedTeachers[2]?.label,
+            supervisor4: selectedTeachers[3]?.label,
+            supervisor5: selectedTeachers[4]?.label
+        }
 
-        // const userData = {
-        //   name: data.name,
-        //   email: data.email,
-        //   card_id: data.card_id,
-        //   password: data.password
-        // }
-        // api
-        //   .post("/create-student", userData)
-        //   .then((res: any) => {
-        //     console.log(res);
-        //     if (res.status === 200) {
-        //       toast.success("Create User Successfully");
-        //       reset()
-        //     }
-        //   })
-        //   .catch((err: any) => {
-        //     console.log(err);
-        //     toast.error("Please try again");
-        //   });
+        console.log(formData);
+
+
+        api
+            .post("/create-project", formData)
+            .then((res: any) => {
+                console.log(res);
+                if (res.status === 200) {
+                    toast.success("Create Project Successfully");
+                    reset()
+
+                }
+            })
+            .catch((err: any) => {
+                console.log(err);
+                toast.error("Please try again");
+            });
     }
 
     return (
