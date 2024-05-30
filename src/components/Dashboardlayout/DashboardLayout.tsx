@@ -1,18 +1,20 @@
-import React, { useState, ReactNode } from 'react';
-import Header from '../components/Header/index';
-import Sidebar from '../components/Sidebar/index';
-import DashboardLayout from '../components/Dashboardlayout/DashboardLayout';
+
 import { Box } from '@mui/material';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import CustomSidebar from '../components/CustomSidebar/CustomSidebar';
+import React from 'react';
+import CustomHeader from '../CustomHeader/CustomHeader';
+import CustomSidebar from '../CustomSidebar/CustomSidebar';
 
-
-
-const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+export default function DashboardLayout({ children }: any) {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean | null>(null);
   const [getDropdown, setGetDropdown] = React.useState<string | null>(null);
   const [dropDownOpen, setDropDownOpen] = React.useState<string | null>(null);
 
+  // const [themeDark, setThemeDark] = useState<string | null>(localStorage.getItem("dark") ? localStorage.getItem("dark") : 'false');
+  // const [themeDark, setThemeDark] = useState<string | null>('true');
+
+  // useEffect(() => {
+  //     themeDark && localStorage.setItem("dark", themeDark);
+  // }, [themeDark])
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -33,12 +35,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
   return (
-<>
-
-
-
     <Box
       component={'div'}
       sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}
@@ -61,13 +58,5 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         {children}
       </CustomSidebar>
     </Box>
-    {/* <DashboardLayout/> */}
-    
-    
-    
-    
-    </>
   );
-};
-
-export default DefaultLayout;
+}
