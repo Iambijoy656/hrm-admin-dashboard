@@ -79,7 +79,7 @@ const dropdownMenus: MenuType[] = [
     mainIcon: <LuLayoutDashboard size={18} />,
   },
   {
-    mainTitle: 'Smart Link',
+    mainTitle: 'Inventory Management',
     path: '/smart-link',
     mainIcon: <TbNavigationDiscount />,
     subMenus: [
@@ -88,47 +88,53 @@ const dropdownMenus: MenuType[] = [
         path: '/firewall',
       },
       {
-        title: 'Nested 1',
+        title: 'Products',
         path: '',
         nestedSubMenus: [
           {
-            title: '1',
-            path: '/offerwall',
+            title: 'Product List',
+            path: '/inventory/product-list',
           },
           {
-            title: '2',
-            path: '/approved-offers',
+            title: 'Service',
+            path: '/inventory/service',
+          },
+          {
+            title: 'Add Product',
+            path: '/inventory/add-product',
           },
         ],
       },
-      {
-        title: 'Nested 2',
-        path: '',
-        nestedSubMenus: [
-          {
-            title: '1',
-            path: '/offerwall',
-          },
-          {
-            title: '2',
-            path: '/approved-offers',
-          },
-        ],
-      },
-      {
-        title: 'Nested 3',
-        path: '',
-        nestedSubMenus: [
-          {
-            title: '1',
-            path: '/offerwall',
-          },
-          {
-            title: '2',
-            path: '/approved-offers',
-          },
-        ],
-      },
+
+
+      // {
+      //   title: 'Nested 2',
+      //   path: '',
+      //   nestedSubMenus: [
+      //     {
+      //       title: '1',
+      //       path: '/offerwall',
+      //     },
+      //     {
+      //       title: '2',
+      //       path: '/approved-offers',
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: 'Nested 3',
+      //   path: '',
+      //   nestedSubMenus: [
+      //     {
+      //       title: '1',
+      //       path: '/offerwall',
+      //     },
+      //     {
+      //       title: '2',
+      //       path: '/approved-offers',
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
