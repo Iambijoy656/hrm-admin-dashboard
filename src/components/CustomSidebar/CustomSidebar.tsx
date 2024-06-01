@@ -1,29 +1,30 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import avatar from '../../public/pngegg.png';
+import React, { SetStateAction, useState } from 'react';
 import { AiOutlineFundProjectionScreen } from 'react-icons/ai';
-import { HiLink, HiOutlineDocumentReport } from 'react-icons/hi';
-import { PiLinkDuotone } from 'react-icons/pi';
-import {
-  TbHomeSignal,
-  TbNavigationDiscount,
-  TbProgressHelp,
-} from 'react-icons/tb';
 import { BsQuestionLg } from 'react-icons/bs';
+import { TbHomeSignal, TbNavigationDiscount } from 'react-icons/tb';
 
-import { RiArrowRightSLine, RiShutDownLine } from 'react-icons/ri';
-import { MdPayment } from 'react-icons/md';
-import { Box, Typography, Tooltip } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { LiaEdit } from 'react-icons/lia';
-import { IoBarChartOutline } from 'react-icons/io5';
 import { LuLayoutDashboard } from 'react-icons/lu';
+import { RiArrowRightSLine, RiShutDownLine } from 'react-icons/ri';
 import { useLocation, useNavigate } from 'react-router-dom';
+import CustomHeader from '../CustomHeader/CustomHeader';
 
+type SingleMenuType = {
+  title: string;
+  path: String;
+  icon: React.JSX.Element;
+};
+type NestedMenuType = {
+  title: string;
+  path: string;
+};
 type SubMenuType = {
   title: string;
   path: string;
-  icon: React.JSX.Element;
+  nestedSubMenus?: NestedMenuType[];
 };
 
 type MenuType = {
@@ -36,11 +37,11 @@ type MenuType = {
 type SidebarProps = {
   children: React.ReactNode;
   sidebarOpen: boolean | null;
-  setSidebarOpen: Dispatch<SetStateAction<boolean | null>>;
+  setSidebarOpen: React.Dispatch<SetStateAction<boolean | null>>;
   dropDownOpen: string | null;
-  setDropDownOpen: Dispatch<SetStateAction<string | null>>;
+  setDropDownOpen: React.Dispatch<SetStateAction<string | null>>;
   getDropdown: string | null;
-  setGetDropdown: Dispatch<SetStateAction<string | null>>;
+  setGetDropdown: React.Dispatch<SetStateAction<string | null>>;
 };
 
 const sidebarTopLinks: any = [
@@ -78,123 +79,62 @@ const dropdownMenus: MenuType[] = [
     mainIcon: <LuLayoutDashboard size={18} />,
   },
   {
-    mainTitle: 'Smart Link',
+    mainTitle: 'Inventory Management',
     path: '/smart-link',
-    mainIcon: <PiLinkDuotone size={18} />,
-  },
-  // {
-  //   mainTitle: "Campaign",
-  //   path: "",
-  //   mainIcon: <PiFlagPennantDuotone size={18} />,
-  //   subMenus: [
-  //     {
-  //       title: "Create New Campaign",
-  //       path: "/createNewCampaign",
-  //       icon: <HiOutlineDocumentReport />,
-  //     },
-  //     {
-  //       title: "Manage Campaign",
-  //       path: "/manageCampaign",
-  //       icon: <MdOutlinePayments />,
-  //     },
-  //   ],
-  // },
-  {
-    mainTitle: 'Offer Wall',
-    path: '',
-    mainIcon: <TbNavigationDiscount size={18} />,
+    mainIcon: <TbNavigationDiscount />,
     subMenus: [
       {
         title: 'All Offers',
-        path: '/offerwall',
-        icon: <TbNavigationDiscount />,
+        path: '/firewall',
       },
       {
-        title: 'Approved Offers',
-        path: '/approved-offers',
-        icon: <TbNavigationDiscount />,
+        title: 'Products',
+        path: '',
+        nestedSubMenus: [
+          {
+            title: 'Product List',
+            path: '/inventory/product-list',
+          },
+          {
+            title: 'Service',
+            path: '/inventory/service',
+          },
+          {
+            title: 'Add Product',
+            path: '/inventory/add-product',
+          },
+        ],
       },
-    ],
-  },
-  // {
-  //   mainTitle: "Sources",
-  //   path: "",
-  //   mainIcon: <TbNavigationDiscount size={18} />,
-  //   subMenus: [
-  //     {
-  //       title: "CPC Sources",
-  //       path: "/cpcSources",
-  //       icon: <HiOutlineDocumentReport />,
-  //     },
-  //     {
-  //       title: "CPI/CPA Sources",
-  //       path: "/cpiCpaSources",
-  //       icon: <MdOutlinePayments />,
-  //     },
-  //   ],
-  // },
-  {
-    mainTitle: 'Statistics',
-    path: '',
-    mainIcon: <IoBarChartOutline size={18} />,
-    subMenus: [
-      {
-        title: 'Quick Report',
-        path: '/quick-report',
-        icon: <HiOutlineDocumentReport />,
-      },
-      {
-        title: 'Conversion Report',
-        path: '/conversion-report',
-        icon: <HiOutlineDocumentReport />,
-      },
+
+
       // {
-      //   title: "Transaction Report",
-      //   path: "/transactionReport",
-      //   icon: <MdOutlinePayments />,
+      //   title: 'Nested 2',
+      //   path: '',
+      //   nestedSubMenus: [
+      //     {
+      //       title: '1',
+      //       path: '/offerwall',
+      //     },
+      //     {
+      //       title: '2',
+      //       path: '/approved-offers',
+      //     },
+      //   ],
       // },
-    ],
-  },
-  {
-    mainTitle: 'Payment',
-    path: '/payment',
-    mainIcon: <MdPayment size={18} />,
-  },
-  {
-    mainTitle: 'Postback URls',
-    path: '/postbackURLs',
-    mainIcon: <HiLink size={18} />,
-  },
-  // {
-  //   mainTitle: "Payout History",
-  //   path: "/payoutHistory",
-  //   mainIcon: <RiSecurePaymentLine />,
-  // },
-  // {
-  //   mainTitle: "Tracking",
-  //   path: "/tracking",
-  //   mainIcon: <CgTrack />,
-  // },
-  // {
-  //   mainTitle: "Statistics",
-  //   path: "/statistics",
-  //   mainIcon: <IoBarChartOutline />,
-  // },
-  // {
-  //   mainTitle: "Deposite",
-  //   path: "/deposite",
-  //   mainIcon: <RiLuggageDepositLine size={18} />,
-  // },
-  {
-    mainTitle: 'Help Center',
-    path: '',
-    mainIcon: <TbProgressHelp size={18} />,
-    subMenus: [
-      {
-        title: 'FAQ',
-        path: '/faq',
-        icon: <TbNavigationDiscount />,
-      },
+      // {
+      //   title: 'Nested 3',
+      //   path: '',
+      //   nestedSubMenus: [
+      //     {
+      //       title: '1',
+      //       path: '/offerwall',
+      //     },
+      //     {
+      //       title: '2',
+      //       path: '/approved-offers',
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
@@ -214,6 +154,7 @@ export default function CustomSidebar({
 
   //for hover inside sx
   const [hover, setHover] = useState<string>('');
+  const [nestedDropOpen, setNestedDropOpen] = useState<string | null>(null);
 
   // redux store
   // const themeDark = useAppSelector((state) => state.themeReducer.theme);
@@ -224,6 +165,7 @@ export default function CustomSidebar({
   function handleDropdownOpen(id: string) {
     if (dropDownOpen === id) {
       setDropDownOpen(null);
+      setNestedDropOpen(null);
       setGetDropdown(null);
     }
     if (dropDownOpen !== id) {
@@ -231,9 +173,27 @@ export default function CustomSidebar({
       setGetDropdown(id);
     }
   }
+
+  function handleNestedDropdownOpen(id: string) {
+    if (nestedDropOpen === id) {
+      setNestedDropOpen(null);
+      // setGetDropdown(null);
+    }
+    if (nestedDropOpen !== id) {
+      setNestedDropOpen(id);
+      // setGetDropdown(id);
+    }
+  }
+
   const handleClick = (id: string) => {
     setDropDownOpen(id);
     handleDropdownOpen(id);
+    setSidebarOpen(true);
+  };
+
+  const handleNestedMenuClick = (id: string) => {
+    setNestedDropOpen(id);
+    handleNestedDropdownOpen(id);
     setSidebarOpen(true);
   };
 
@@ -271,13 +231,14 @@ export default function CustomSidebar({
 
   return (
     <Box
+      className="bg-white dark:bg-boxdark"
       component={'div'}
       sx={{
         display: 'flex',
         width: '100%',
-        color: '#13183e',
-        height: 'calc(100dvh - 50px)',
-        backgroundColor: '#121622',
+        // color: '#13183e',
+        height: '100vh',
+        // backgroundColor: '#121622',
       }}
     >
       <Box
@@ -417,7 +378,7 @@ export default function CustomSidebar({
                   opacity: `${sidebarOpen ? 1 : 0}`,
                 }}
               >
-                {("auth?.name uerufhrrgrrfs" ?? 'Guest').slice(0, 18)}
+                {('auth?.name uerufhrrgrrfs' ?? 'Guest').slice(0, 18)}
               </Typography>
             </Tooltip>
             <Typography
@@ -431,7 +392,7 @@ export default function CustomSidebar({
                 opacity: `${sidebarOpen ? 1 : 0}`,
               }}
             >
-              ID: {"auth?.userId" ?? 'guest123'}
+              ID: {'auth?.userId' ?? 'guest123'}
             </Typography>
           </Box>
 
@@ -449,7 +410,7 @@ export default function CustomSidebar({
               transition: '.5s',
             }}
           >
-            {sidebarTopLinks.map((link:any, index:any) => (
+            {sidebarTopLinks.map((link: any, index: any) => (
               <Tooltip followCursor key={index} title={link.title}>
                 <Box
                   component={'span'}
@@ -539,7 +500,6 @@ export default function CustomSidebar({
                               : ''
                           }`,
                           color: 'white',
-                          // marginLeft: `${hover === menu.mainTitle ? '6px' : 0}`,
                           gap: '10px',
                           textTransform: 'capitalize',
                           padding: '8px',
@@ -639,59 +599,270 @@ export default function CustomSidebar({
                         }
                   }
                 >
-                  {menu.subMenus.map((submenu, index) => (
-                    <Box
-                      component={'span'}
-                      onClick={() => handleRouteChange(submenu.path)}
-                      onMouseEnter={() => setHover(submenu.title)}
-                      onMouseLeave={() => setHover('')}
-                      key={index}
-                      sx={
-                        dropDownOpen === menu.mainTitle
-                          ? {
+                  {menu.subMenus.map((submenu, index) =>
+                    submenu.nestedSubMenus ? (
+                      <Box component={'div'} key={index}>
+                        <Box
+                          component={'div'}
+                          onMouseEnter={() => setHover(submenu.title)}
+                          onMouseLeave={() => setHover('')}
+                          onClick={() => handleNestedMenuClick(submenu?.title)}
+                          sx={
+                            sidebarOpen
+                              ? {
+                                  display:
+                                    dropDownOpen === menu.mainTitle
+                                      ? 'flex'
+                                      : 'none',
+                                  height: '35px',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  backgroundColor: `${
+                                    hover === submenu.title ? '#3d475f63' : ''
+                                  }`,
+                                  color: 'white',
+                                  // marginLeft: `${hover === menu.mainTitle ? '6px' : 0}`,
+                                  gap: '10px',
+                                  textTransform: 'capitalize',
+                                  padding: '8px',
+                                  borderRadius: '4px 0 0 4px',
+                                  ml: '20px',
+                                  transition: '.2s',
+                                  cursor: 'pointer',
+                                }
+                              : {
+                                  display: 'flex',
+                                  height: '35px',
+                                  color: 'white',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  backgroundColor: `${
+                                    hover === menu.mainTitle ? '#3d475f63' : ''
+                                  }`,
+                                  textTransform: 'capitalize',
+                                  padding: '8px',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  transition: '.2s',
+                                }
+                          }
+                        >
+                          <Box
+                            component={'span'}
+                            sx={{
                               display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              color: `${
-                                pathname === submenu.path ||
-                                hover === submenu.title
-                                  ? '#ED7D31'
-                                  : 'white'
-                              }`,
-                              textTransform: 'capitalize',
-                              letterSpacing: '.1ch',
-                              padding: '8px',
-                              marginLeft: '20px',
-                              borderRadius: '4px',
                               whiteSpace: 'nowrap',
-                              transition: '.2s',
-                              cursor: 'pointer',
-                            }
-                          : {
-                              display: 'none',
                               alignItems: 'center',
-                              gap: '10px',
-                              color: `${
-                                pathname === submenu.path ||
-                                hover === submenu.title
-                                  ? '#ED7D31'
-                                  : 'white'
-                              }`,
-                              textTransform: 'capitalize',
-                              letterSpacing: '.1ch',
-                              padding: '8px',
+                              gap: 1,
+                            }}
+                          >
+                            {/* <Box
+                              component={'span'}
+                              sx={{
+                                display: {
+                                  xs: `${sidebarOpen ? 'block' : 'none'}`,
+                                  md: 'block',
+                                },
+                                fontSize: 18,
+                              }}
+                            >
+                              {menu.mainIcon}
+                            </Box> */}
+                            <Box
+                              component={'span'}
+                              sx={
+                                nestedDropOpen !== submenu.title || !sidebarOpen
+                                  ? {
+                                      display: `${
+                                        sidebarOpen ? 'block' : 'none'
+                                      }`,
+                                      transition: '.2s',
+                                    }
+                                  : {
+                                      display: `${
+                                        sidebarOpen ? 'block' : 'none'
+                                      }`,
+                                      transform: 'rotate(-90deg)',
+                                      transition: '.2s',
+                                    }
+                              }
+                            >
+                              {submenu.title && sidebarOpen && (
+                                <RiArrowRightSLine size={18} />
+                              )}
+                            </Box>
+                            <Typography
+                              variant="body2"
+                              fontSize={13}
+                              fontWeight={400}
+                              sx={
+                                sidebarOpen
+                                  ? {
+                                      display: 'block',
+                                    }
+                                  : { display: 'none' }
+                              }
+                            >
+                              {submenu.title}
+                            </Typography>
+                          </Box>
+                          {/* <Box
+                            component={'span'}
+                            sx={
+                              nestedDropOpen !== submenu.title || !sidebarOpen
+                                ? {
+                                    display: `${
+                                      sidebarOpen ? 'block' : 'none'
+                                    }`,
+                                    transition: '.2s',
+                                  }
+                                : {
+                                    display: `${
+                                      sidebarOpen ? 'block' : 'none'
+                                    }`,
+                                    transform: 'rotate(-90deg)',
+                                    transition: '.2s',
+                                  }
                             }
-                      }
-                    >
-                      <Typography
-                        variant="body2"
-                        fontSize={12}
-                        fontWeight={400}
+                          >
+                            {submenu.title && sidebarOpen && (
+                              <RiArrowRightSLine size={18} />
+                            )}
+                          </Box> */}
+                        </Box>
+                        <Box
+                          component={'div'}
+                          sx={
+                            nestedDropOpen === submenu.title &&
+                            dropDownOpen !== null
+                              ? {
+                                  height: 'fit-content',
+                                  transformOrigin: 'top',
+                                  borderLeft: '1px solid #464646',
+                                  ml: '40px',
+                                  my: 1,
+                                  backgroundColor: '#121622',
+                                  padding: '2px 0 2px 0',
+                                  transition: '.3s',
+                                }
+                              : {
+                                  height: 0,
+                                  transformOrigin: 'top',
+                                  ml: '40px',
+                                  // my:0,
+                                  transition: '.3s',
+                                }
+                          }
+                        >
+                          {submenu.nestedSubMenus.map((nestedMenu, index) => (
+                            <Box
+                              component={'span'}
+                              onClick={() => handleRouteChange(nestedMenu.path)}
+                              onMouseEnter={() => setHover(nestedMenu.title)}
+                              onMouseLeave={() => setHover('')}
+                              key={index}
+                              sx={
+                                nestedDropOpen === submenu.title &&
+                                dropDownOpen !== null
+                                  ? {
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '10px',
+                                      color: `${
+                                        pathname === nestedMenu.path ||
+                                        hover === nestedMenu.title
+                                          ? '#ED7D31'
+                                          : 'white'
+                                      }`,
+                                      textTransform: 'capitalize',
+                                      letterSpacing: '.1ch',
+                                      padding: '8px',
+                                      borderRadius: '4px',
+                                      whiteSpace: 'nowrap',
+                                      transition: '.2s',
+                                      cursor: 'pointer',
+                                    }
+                                  : {
+                                      display: 'none',
+                                      alignItems: 'center',
+                                      gap: '10px',
+                                      color: `${
+                                        pathname === submenu.path ||
+                                        hover === submenu.title
+                                          ? '#ED7D31'
+                                          : 'white'
+                                      }`,
+                                      textTransform: 'capitalize',
+                                      letterSpacing: '.1ch',
+                                      padding: '8px',
+                                    }
+                              }
+                            >
+                              <Typography
+                                variant="body2"
+                                fontSize={12}
+                                fontWeight={400}
+                              >
+                                {nestedMenu.title}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box
+                        component={'span'}
+                        onClick={() => handleRouteChange(submenu.path)}
+                        onMouseEnter={() => setHover(submenu.title)}
+                        onMouseLeave={() => setHover('')}
+                        key={index}
+                        sx={
+                          dropDownOpen === menu.mainTitle
+                            ? {
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                color: `${
+                                  pathname === submenu.path ||
+                                  hover === submenu.title
+                                    ? '#ED7D31'
+                                    : 'white'
+                                }`,
+                                textTransform: 'capitalize',
+                                letterSpacing: '.1ch',
+                                padding: '8px',
+                                marginLeft: '20px',
+                                borderRadius: '4px',
+                                whiteSpace: 'nowrap',
+                                transition: '.2s',
+                                cursor: 'pointer',
+                              }
+                            : {
+                                display: 'none',
+                                alignItems: 'center',
+                                gap: '10px',
+                                color: `${
+                                  pathname === submenu.path ||
+                                  hover === submenu.title
+                                    ? '#ED7D31'
+                                    : 'white'
+                                }`,
+                                textTransform: 'capitalize',
+                                letterSpacing: '.1ch',
+                                padding: '8px',
+                              }
+                        }
                       >
-                        {submenu.title}
-                      </Typography>
-                    </Box>
-                  ))}
+                        <Typography
+                          variant="body2"
+                          fontSize={12}
+                          fontWeight={400}
+                        >
+                          {submenu.title}
+                        </Typography>
+                      </Box>
+                    ),
+                  )}
                 </Box>
               </Box>
             ) : (
@@ -768,22 +939,36 @@ export default function CustomSidebar({
               </Box>
             ),
           )}
-
         </Box>
       </Box>
+
       <Box
         component={'main'}
         sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          gap: 2,
           width: '100%',
           height: '100%',
-          pb: 10,
-          pt: 1,
-          px: { xs: 1, md: 2 },
-          overflowY: 'auto',
+          overflowY: 'scroll',
           '&::-webkit-scrollbar': { display: 'none' },
         }}
       >
-        {children}
+        <CustomHeader
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          dropDownOpen={dropDownOpen}
+          setDropDownOpen={setDropDownOpen}
+        />
+        <Box
+          sx={{
+            px: { xs: 1, md: 2 },
+          }}
+          component={'div'}
+        >
+          {children}
+        </Box>
       </Box>
     </Box>
   );

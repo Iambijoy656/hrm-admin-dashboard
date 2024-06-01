@@ -2,28 +2,28 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
+import Admins from './pages/Admins/Admins';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
+import CreateProject from './pages/CreateProject';
+import CreateTeacher from './pages/CreateTeacher/CreateTeacher';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
+import ProductList from './pages/Inventory/ProductList/ProductList';
+import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
+import SchedulePage from './pages/SchedulePage';
 import Settings from './pages/Settings';
+import Students from './pages/Students/Students';
+import SubmittedSupervisorList from './pages/SubmittedSupervisorList';
 import Tables from './pages/Tables';
+import Teachers from './pages/Teachers/Teachers';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import Login from './pages/Login/Login';
 import Users from './pages/Users/Users';
-import Students from './pages/Students/Students';
-import Admins from './pages/Admins/Admins';
-import Teachers from './pages/Teachers/Teachers';
-import CreateTeacher from './pages/CreateTeacher/CreateTeacher';
-import CreateProject from './pages/CreateProject';
-import SubmittedSupervisorList from './pages/SubmittedSupervisorList';
-import SchedulePage from './pages/SchedulePage';
-
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,6 +42,16 @@ function App() {
   ) : (
     <>
       <Routes>
+        <Route
+          path="/inventory/product-list"
+          element={
+            <>
+              <PageTitle title="Inventory | Product List" />
+              <ProductList />
+            </>
+          }
+        />
+
         <Route
           index
           element={
@@ -237,7 +247,6 @@ function App() {
           }
         />
       </Routes>
-
     </>
   );
 }
