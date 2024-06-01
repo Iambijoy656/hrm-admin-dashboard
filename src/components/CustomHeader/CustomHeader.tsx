@@ -1,27 +1,16 @@
-
-import React from "react";
-import { LiaUserCogSolid } from "react-icons/lia";
-import { TbMenu2 } from "react-icons/tb";
-import { CgMenuLeft } from "react-icons/cg";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import avatar from "../../public/pngegg.png";
-import { GoScreenFull } from "react-icons/go";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import { MdLogout, MdOutlineLogin } from "react-icons/md";
-
-
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import React, { SetStateAction, useState } from 'react';
+import { CgMenuLeft } from 'react-icons/cg';
+import { GoScreenFull } from 'react-icons/go';
+import { TbMenu2 } from 'react-icons/tb';
+import DarkModeSwitcher from '../Header/DarkModeSwitcher';
 
 type HeaderProps = {
   sidebarOpen: boolean | null;
-  setSidebarOpen: Dispatch<SetStateAction<boolean | null>>;
+  setSidebarOpen: React.Dispatch<SetStateAction<boolean | null>>;
   dropDownOpen: string | null;
-  setDropDownOpen: Dispatch<SetStateAction<string | null>>;
-  getDropdown: string | null;
+  setDropDownOpen: React.Dispatch<SetStateAction<string | null>>;
 };
 
 export default function CustomHeader({
@@ -29,28 +18,17 @@ export default function CustomHeader({
   setSidebarOpen,
   dropDownOpen,
   setDropDownOpen,
-  getDropdown,
 }: HeaderProps) {
-//   const router = useRouter();
-//   const apiSecure = ApiJWT();
-  // const [badgeOpen, setBadgeOpen] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
-//   const { authLoading } = useAuth();
-//   const cookies = React.useMemo(() => new Cookies(), []);
-
-  //for redux state manage
-//   const auth = useAppSelector((state) => state.authReducer.auth);
-//   const themeDark = useAppSelector((state) => state.themeReducer.theme);
 
   //for profile manu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openAnchorEl = Boolean(anchorEl);
 
-
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCloseAnchorEl = () => {
     setAnchorEl(null);
   };
@@ -58,31 +36,30 @@ export default function CustomHeader({
   const handleSidebar = () => {
     if (dropDownOpen) {
       setDropDownOpen(null);
-    } else {
-      setDropDownOpen(getDropdown);
+      // setNestedDropOpen(null);
     }
     setSidebarOpen(!sidebarOpen);
   };
 
-//   const handleTheme = () => {
-//     if (themeDark === "false") {
-//       dispatch(themeState("true"));
-//     } else {
-//       dispatch(themeState("false"));
-//     }
-//   };
+  //   const handleTheme = () => {
+  //     if (themeDark === "false") {
+  //       dispatch(themeState("true"));
+  //     } else {
+  //       dispatch(themeState("false"));
+  //     }
+  //   };
 
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => setOpen(false);
 
   //handle log out
-//   const handleLogout = () => {
-//     cookies.remove("access-token");
-//     dispatch(setAuth({}));
-//     router.push("/signin");
-//     handleClose();
-//   };
+  //   const handleLogout = () => {
+  //     cookies.remove("access-token");
+  //     dispatch(setAuth({}));
+  //     router.push("/signin");
+  //     handleClose();
+  //   };
 
   //full screen view
   const handleFullScreen = () => {
@@ -92,42 +69,41 @@ export default function CustomHeader({
       document.documentElement.requestFullscreen();
     }
   };
-
   return (
     <Box
-      component={"header"}
+      className="bg-white  dark:bg-boxdark dark:drop-shadow-none"
+      component={'header'}
       sx={{
-        backgroundColor: "#121622",
-        color: "white",
-        position: "sticky",
-        top: "0",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: 50,
-        padding: "0 10px",
-        boxShadow: "0px 7px 18px -15px rgba(0, 0, 0, 0.51)",
+        color: 'white',
+        position: 'sticky',
+        top: '0',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 1,
+        boxShadow: '0px 7px 18px -15px rgba(0, 0, 0, 0.51)',
         zIndex: 100,
-        transition: ".3s",
+        transition: '.3s',
       }}
     >
       <Box
+        className="text-black dark:text-white drop-shadow-1 dark:drop-shadow-none"
         onClick={handleSidebar}
         sx={{
-          display: "flex",
-          columnGap: "15px",
-          alignItems: "center",
+          display: 'flex',
+          columnGap: '15px',
+          alignItems: 'center',
         }}
       >
         <Tooltip title="Collapse sidebar" placement="right">
           <Box
-            component={"span"}
+            component={'span'}
             sx={{
               fontSize: {
                 xs: 26,
                 md: 28,
                 lg: 28,
-                cursor: "pointer",
+                cursor: 'pointer',
                 padding: 2,
               },
             }}
@@ -137,38 +113,52 @@ export default function CustomHeader({
         </Tooltip>
       </Box>
       <Box
-        component={"div"}
+        component={'div'}
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          columnGap: { xs: 0, md: "12px" },
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          columnGap: { xs: 0, md: '12px' },
         }}
       >
         <Box
-          component={"div"}
+          className="text-black dark:text-white drop-shadow-1 dark:drop-shadow-none"
+          component={'div'}
           sx={{
-            display: { xs: "none", sm: "flex" },
-            alignItems: "center",
-            color: "white",
+            display: { xs: 'none', sm: 'flex' },
+            alignItems: 'center',
+            // color: 'white',
             gap: 1,
           }}
         >
-          <Box component={"span"} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          {/* <!-- Dark Mode Toggler --> */}
+          <DarkModeSwitcher />
+          {/* <!-- Dark Mode Toggler --> */}
+          <Box
+            component={'span'}
+            sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+          >
             <Typography variant="body2" sx={{ fontSize: 12 }}>
               Earnings :
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: 12, color: "#ED7D31" }}>
-               "0.00"
+            <Typography variant="body2" sx={{ fontSize: 12, color: '#ED7D31' }}>
+              "0.00"
             </Typography>
           </Box>
-          <Divider orientation="vertical" flexItem style={{ backgroundColor: "gray" }} />
-          <Box component={"span"} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Divider
+            orientation="vertical"
+            flexItem
+            style={{ backgroundColor: 'gray' }}
+          />
+          <Box
+            component={'span'}
+            sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+          >
             <Typography variant="body2" sx={{ fontSize: 12 }}>
               Balance :
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: 12, color: "#ED7D31" }}>
-              ${ "0.00"}
+            <Typography variant="body2" sx={{ fontSize: 12, color: '#ED7D31' }}>
+              ${'0.00'}
             </Typography>
           </Box>
         </Box>
@@ -188,9 +178,14 @@ export default function CustomHeader({
             <ModalDashboard open={open} handleClose={handleClose} />
           </Box>
         </Tooltip> */}
-        <Tooltip title="Full screen" placement="bottom" onClick={handleFullScreen}>
+        <Tooltip
+          title="Full screen"
+          placement="bottom"
+          onClick={handleFullScreen}
+        >
           <IconButton
-            sx={{ fontSize: { xs: 20, md: 22 }, color: "white" }}
+          className='dark:text-white'
+            sx={{ fontSize: { xs: 20, md: 22 } }}
             aria-label="delete"
           >
             <GoScreenFull />

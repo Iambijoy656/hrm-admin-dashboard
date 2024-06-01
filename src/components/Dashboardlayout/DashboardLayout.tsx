@@ -9,13 +9,6 @@ export default function DashboardLayout({ children }: any) {
   const [getDropdown, setGetDropdown] = React.useState<string | null>(null);
   const [dropDownOpen, setDropDownOpen] = React.useState<string | null>(null);
 
-  // const [themeDark, setThemeDark] = useState<string | null>(localStorage.getItem("dark") ? localStorage.getItem("dark") : 'false');
-  // const [themeDark, setThemeDark] = useState<string | null>('true');
-
-  // useEffect(() => {
-  //     themeDark && localStorage.setItem("dark", themeDark);
-  // }, [themeDark])
-
   React.useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) {
@@ -35,6 +28,7 @@ export default function DashboardLayout({ children }: any) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+
   return (
     <Box
       component={'div'}
@@ -45,7 +39,6 @@ export default function DashboardLayout({ children }: any) {
         setSidebarOpen={setSidebarOpen}
         dropDownOpen={dropDownOpen}
         setDropDownOpen={setDropDownOpen}
-        getDropdown={getDropdown}
       />
       <CustomSidebar
         sidebarOpen={sidebarOpen}
