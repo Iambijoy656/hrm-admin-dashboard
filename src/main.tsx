@@ -7,16 +7,20 @@ import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import { Toaster } from 'react-hot-toast';
+import ThemeProvider from './context/ThemeProvider';
+
 
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Router>
+<ThemeProvider>
+<Router>
       <Toaster
         position="top-center"
       />
       <App />
     </Router>
+</ThemeProvider>
   </React.StrictMode>,
 );

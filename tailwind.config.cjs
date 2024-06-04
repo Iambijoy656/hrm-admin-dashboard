@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
       colors: {
         current: 'currentColor',
         transparent: 'transparent',
-        white: '#FFFFFF',
+        white: '#f1f1f1',
         black: '#1C2434',
         'black-2': '#010101',
         body: '#64748B',
@@ -34,7 +34,9 @@ module.exports = {
         'gray-3': '#FAFAFA',
         whiten: '#F1F5F9',
         whiter: '#F5F7FD',
-        boxdark: '#24303F',
+        // boxdark: '#24303F',
+        // boxdark: '#1d1d1d',
+        boxdark: '#282828',
         'boxdark-2': '#1A222C',
         strokedark: '#2E3A47',
         'form-strokedark': '#3d4d60',
@@ -250,5 +252,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('daisyui'),],
-}
+  plugins: [require('daisyui')],
+};

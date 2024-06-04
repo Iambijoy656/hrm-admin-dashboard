@@ -106,7 +106,6 @@ const dropdownMenus: MenuType[] = [
         ],
       },
 
-
       // {
       //   title: 'Nested 2',
       //   path: '',
@@ -272,7 +271,8 @@ export default function CustomSidebar({
           sx={
             sidebarOpen
               ? {
-                  backgroundColor: '#1c2437',
+                  // backgroundColor: '#1c2437',
+                  backgroundColor: '#071318',
                   padding: '20px 10px 20px 10px',
                   minWidth: { xs: '70%', sm: '30%', md: '100%' },
                   maxWidth: { xs: '70%', sm: '30%', md: '100%' },
@@ -285,7 +285,8 @@ export default function CustomSidebar({
                   transition: '.3s',
                 }
               : {
-                  backgroundColor: '#1c2437',
+                  // backgroundColor: '#1c2437',
+                  backgroundColor: '#071318',
                   padding: { xs: '20px 0 20px 0', md: '20px 10px 20px 10px' },
                   maxWidth: { xs: 0, sm: 0, md: '100%' },
                   minWidth: { xs: 0, sm: 0, md: '100%' },
