@@ -15,15 +15,14 @@ import FormLayout from './pages/Form/FormLayout';
 import ProductList from './pages/Inventory/ProductList/ProductList';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
-import SchedulePage from './pages/SchedulePage';
 import Settings from './pages/Settings';
 import Students from './pages/Students/Students';
-import SubmittedSupervisorList from './pages/SubmittedSupervisorList';
 import Tables from './pages/Tables';
 import Teachers from './pages/Teachers/Teachers';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Users from './pages/Users/Users';
+import AddProduct from './pages/Inventory/AddProduct/AddProduct';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,6 +47,16 @@ function App() {
             <>
               <PageTitle title="Inventory | Product List" />
               <ProductList />
+            </>
+          }
+        />
+
+        <Route
+          path="/inventory/add-product"
+          element={
+            <>
+              <PageTitle title="Inventory | Add Product" />
+              <AddProduct/>
             </>
           }
         />
@@ -144,27 +153,6 @@ function App() {
             </>
           }
         />
-
-        <Route
-          path="/submitted-supervisor-list"
-          element={
-            <>
-              <PageTitle title="Supervisor | Submitted Supervisor List" />
-              <SubmittedSupervisorList />
-            </>
-          }
-        />
-
-        <Route
-          path="/schedule"
-          element={
-            <>
-              <PageTitle title="Schedule | schedule" />
-              <SchedulePage />
-            </>
-          }
-        />
-
         <Route
           path="/tables"
           element={

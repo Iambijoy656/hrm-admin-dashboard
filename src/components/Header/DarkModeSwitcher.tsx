@@ -1,10 +1,15 @@
+import { useContext } from 'react';
 import useColorMode from '../../hooks/useColorMode';
+import { ThemeContext } from '../../context/ThemeProvider';
 
 const DarkModeSwitcher = () => {
   const [colorMode, setColorMode] = useColorMode();
+  const { mode, setMode } = useContext(ThemeContext);
+  // console.log('colorMode',colorMode)
+  // console.log('mode',mode)
 
   return (
-    <div className='mx-2'>
+    <div className="mx-2">
       <label
         className={`relative m-0 block h-5 w-10  rounded-full ${
           colorMode === 'dark' ? 'bg-primary' : 'bg-stroke'
@@ -14,7 +19,10 @@ const DarkModeSwitcher = () => {
           type="checkbox"
           onChange={() => {
             if (typeof setColorMode === 'function') {
-              setColorMode(colorMode === 'light' ? 'dark' : 'light');
+              const newMode = colorMode === 'light' ? 'dark' : 'light';
+              console.log('newMode',newMode)
+              setColorMode(newMode);
+              setMode(newMode);
             }
           }}
           className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"
