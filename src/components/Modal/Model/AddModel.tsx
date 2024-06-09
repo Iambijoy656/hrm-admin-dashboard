@@ -1,21 +1,24 @@
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Options } from '../../../types/Modals';
 import NativeSelect from '../../ui/NativeSelect';
 import TextAreaInput from '../../ui/TextAreaInput';
-
-export default function AddUnitTypeModal() {
+export default function AddModel() {
   const unitTypesOptions: Options[] = [
     { value: 'Single', label: 'Standard' },
     { value: 'Combo', label: 'Combo' },
     { value: 'Service', label: 'Service' },
   ];
 
+  const statusOption: Options[] = [
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
+
   type Inputs = {
-    unit_type: string;
+    name: string;
     description: string;
     status: string;
   };
@@ -37,13 +40,13 @@ export default function AddUnitTypeModal() {
         sx={{ fontSize: 18 }}
         component="h2"
       >
-        Add Unit Type
+        Add Brand
       </Typography>
       <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
         <NativeSelect
-          name="unit_type"
-          label="Unit Type"
-          errors={errors.unit_type}
+          name="name"
+          label="Name"
+          errors={errors.name}
           options={unitTypesOptions}
           placeholder="Select an option"
           defaultValue=""
@@ -77,7 +80,7 @@ export default function AddUnitTypeModal() {
           name="status"
           label="Status"
           errors={errors.status}
-          options={unitTypesOptions}
+          options={statusOption}
           placeholder="Select an option"
           defaultValue=""
           disabled={false}

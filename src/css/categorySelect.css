@@ -1,0 +1,27 @@
+.dropdown {
+    width: 100%;
+    z-index: 100;
+    /*background-color:  red;*/
+  }
+  
+  .dropdown-trigger {
+    width: 100%;
+    border-radius: 8px;
+    z-index: 100;
+  }
+  
+  .infinite-scroll-component {
+    min-width: 250px;
+  }
+  
+  .collapsed,
+  .expanded{
+    font-size: 20px;
+    margin: 0 12px;
+  }
+  
+  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.top:after,
+  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.bottom:after{
+    display: none;
+    
+  }

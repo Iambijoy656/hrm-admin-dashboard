@@ -1,10 +1,4 @@
-export type Inputs = {
-  name: string;
-  sku: string;
-  hsn: string;
-  unit_type: string;
-  example: string;
-};
+
 
 export type Options = { value: number | string; label: string };
 
