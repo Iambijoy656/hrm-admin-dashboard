@@ -5,23 +5,40 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import DropdownTreeSelect, { TreeNode } from 'react-dropdown-tree-select';
+import 'react-dropdown-tree-select/dist/styles.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaCirclePlus } from 'react-icons/fa6';
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import AddBrandModal from '../../../components/Modal/BrandModal/AddBrandModal';
+import ConfirmModal from '../../../components/Modal/ConfirmModal';
 import AddUnitTypeModal from '../../../components/Modal/UnitType/AddUnitTypeModal';
 import ProductImage from '../../../components/ProductImage/ProductImage';
 import LabelOutlineInput from '../../../components/ui/LabelOutlineInput';
 import NativeSelect from '../../../components/ui/NativeSelect';
 import { ThemeContext } from '../../../context/ThemeProvider';
+import '../../../css/categorySelect.css';
 import DefaultLayout from '../../../layout/DefaultLayout';
-import { Inputs, Options, Photo } from '../../../types/Modals';
+import { Options, Photo } from '../../../types/Modals';
 import api from '../../../Utilities/api';
 
+interface Category {
+  id: number;
+  parent_id?: number;
+  name_s: string;
+  label?: string;
+  value?: number;
+  children: Category[];
+  checked?: boolean;
+}
+
 const AddProduct = () => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const handleOpenAddUnitType = () => setModalOpen(true);
-  const handleCloseAddUnitType = () => setModalOpen(false);
+  const [openAddUnitTypeModal, setOpenAddUnitTypeModal] =
+    useState<boolean>(false);
+  const [openAddBrandModal, setOpenAddBrandModal] = useState<boolean>(false);
+  const [openAddModel, setOpenAddModel] = useState<boolean>(false);
+
   const { mode } = useContext(ThemeContext);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [hasSerial, setHasSerial] = useState(0);
@@ -33,6 +50,11 @@ const AddProduct = () => {
   const [allUnitType, setAllUnitType] = useState<Options[]>([]);
   const [isUnitTypeChange, setIsUnitTypeChange] = useState(false);
   const [unitType, setUnitType] = useState({});
+
+  const [processDataForCategory, setProcessDataForCategory] = useState<
+    Category[]
+  >([]);
+  const [parentCategory, setParentCategory] = useState<Category | {}>({});
 
   const {
     register,
@@ -49,6 +71,17 @@ const AddProduct = () => {
     { value: 'Combo', label: 'Combo' },
     { value: 'Service', label: 'Service' },
   ];
+
+  type Inputs = {
+    name: string;
+    sku: string;
+    hsn: string;
+    unit_type: string;
+    brand: string;
+    product_type: string;
+    select_model: string;
+    barcode_type: string;
+  };
 
   const handleChangeForUpdateUnitType = (selected: any) => {
     setUnitType(selected);
@@ -93,6 +126,67 @@ const AddProduct = () => {
     getDataFn();
   }, [isUnitTypeChange]);
 
+  //------------------------------------------------------------------------------//
+
+  const buildDirectoryTree = (categories: Category[]): Category[] => {
+    const directoryMap = new Map<number, Category>();
+    const rootDirectories: Category[] = [];
+
+    categories.forEach((category) => {
+      category.label = category.name_s;
+      category.value = category.id;
+      category.children = [];
+      directoryMap.set(category.id, category);
+    });
+
+    categories.forEach((category) => {
+      if (category.parent_id) {
+        const parent = directoryMap.get(category.parent_id);
+        if (parent) {
+          parent.children.push(category);
+        }
+      } else {
+        rootDirectories.push(category);
+      }
+    });
+
+    return rootDirectories;
+  };
+
+  const selectSelectedData = (data: Category[], selected: Category) => {
+    data.forEach((item) => {
+      item.checked = item.id === selected.id ? selected.checked : false;
+      if (item.children.length > 0) {
+        selectSelectedData(item.children, selected);
+      }
+    });
+
+    if (selected.checked) {
+      setParentCategory(selected);
+    } else {
+      setParentCategory({});
+    }
+    setProcessDataForCategory([...data]);
+  };
+
+  const handleValueForCategory = useCallback(
+    (currentNode: TreeNode, selectedNodes: TreeNode[]) => {
+      const selectedCategory = currentNode as unknown as Category;
+      selectSelectedData(processDataForCategory, selectedCategory);
+    },
+    [processDataForCategory],
+  );
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await api.get('/inventory-management/category/all');
+      const categories = response.data.body.data as Category[];
+      const outputData = buildDirectoryTree(categories);
+      setProcessDataForCategory(outputData);
+    };
+    getData();
+  }, []);
+
   return (
     <DefaultLayout>
       <Breadcrumb Parent="Inventory" pageName="Add Product" />
@@ -107,7 +201,7 @@ const AddProduct = () => {
               width: '70%',
               display: 'flex',
               // alignItems: 'center',
-              gap: 1.5,
+              gap: 2.5,
               flexDirection: { xs: 'column' },
             }}
           >
@@ -181,7 +275,11 @@ const AddProduct = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card
+              sx={{
+                width: '100%',
+              }}
+            >
               <CardContent
                 sx={{
                   // width: '100%',
@@ -203,7 +301,9 @@ const AddProduct = () => {
                   <Button
                     endIcon={<FaCirclePlus size={14} />}
                     component="label"
-                    onClick={handleOpenAddUnitType}
+                    onClick={() =>
+                      setOpenAddUnitTypeModal(!openAddUnitTypeModal)
+                    }
                     sx={{
                       fontSize: 12,
                       display: 'flex',
@@ -216,16 +316,19 @@ const AddProduct = () => {
                     New Unit
                   </Button>
                   <NativeSelect
-                  name="example"
-                  label="Example Select"
-                  errors={errors.example}
-                  options={[{ value: '1', label: 'One' }, { value: '2', label: 'Two' }]}
-                  placeholder="Select an option"
-                  defaultValue=""
-                  disabled={false}
-                  readOnly={false}
-                  rules={{ required: 'This field is required' }}
-                  register={register}
+                    name="unit_type"
+                    label="Unit Type"
+                    errors={errors.unit_type}
+                    options={[
+                      { value: '1', label: 'One' },
+                      { value: '2', label: 'Two' },
+                    ]}
+                    placeholder="Select an option"
+                    defaultValue=""
+                    disabled={false}
+                    readOnly={false}
+                    rules={{ required: 'This field is required' }}
+                    register={register}
                   />
                 </Box>
                 <Box
@@ -238,6 +341,7 @@ const AddProduct = () => {
                   }}
                 >
                   <Button
+                    onClick={() => setOpenAddBrandModal(!openAddBrandModal)}
                     endIcon={<FaCirclePlus size={14} />}
                     component="label"
                     // onClick={unitToggle}
@@ -250,23 +354,133 @@ const AddProduct = () => {
                       color: '#3572EF',
                     }}
                   >
-                    New Unit
+                    New Brand
                   </Button>
                   <NativeSelect
-                   name="example"
-                   label="Example Select"
-                   errors={errors.example}
-                   options={[{ value: '1', label: 'One' }, { value: '2', label: 'Two' }]}
-                   placeholder="Select an option"
-                   defaultValue=""
-                   disabled={false}
-                   readOnly={false}
-                   rules={{ required: 'This field is required' }}
-                   register={register}
+                    name="brand"
+                    label="Select Brand"
+                    errors={errors.brand}
+                    options={[
+                      { value: '1', label: 'One' },
+                      { value: '2', label: 'Two' },
+                    ]}
+                    placeholder="Select an option"
+                    defaultValue=""
+                    disabled={false}
+                    readOnly={false}
+                    rules={{ required: 'This field is required' }}
+                    register={register}
+                  />
+                </Box>
+              </CardContent>
+
+              <CardContent
+                sx={{
+                  // width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2.5,
+                  marginTop: 1,
+                  flexDirection: { xs: 'column', sm: 'row' },
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '100%',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Button
+                    endIcon={<FaCirclePlus size={14} />}
+                    component="label"
+                    onClick={() => setOpenAddModel(!openAddModel)}
+                    sx={{
+                      position: 'absolute',
+                      top: -34,
+                      fontSize: 12,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: 'fit-content',
+                      textTransform: 'capitalize',
+                      color: '#3572EF',
+                    }}
+                  >
+                    Model
+                  </Button>
+                  <NativeSelect
+                    name="select_model"
+                    label="Select Model"
+                    errors={errors.select_model}
+                    options={[
+                      { value: '1', label: 'One' },
+                      { value: '2', label: 'Two' },
+                    ]}
+                    placeholder="Select a Modal"
+                    defaultValue=""
+                    disabled={false}
+                    readOnly={false}
+                    rules={{ required: 'This field is required' }}
+                    register={register}
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '100%',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <NativeSelect
+                    name="barcode_type"
+                    label="Barcode Type"
+                    errors={errors.barcode_type}
+                    options={[
+                      { value: 'Code 128', label: 'Code 128' },
+                      { value: 'Code 39', label: 'Code 39' },
+                      { value: 'UPC-A', label: 'UPC-A' },
+                      { value: 'UPC-E', label: 'UPC-E' },
+                      { value: 'EAN-8', label: 'EAN-8' },
+                      { value: 'EAN-13', label: 'EAN-13' },
+                    ]}
+                    placeholder="Select a Barcode Type"
+                    defaultValue=""
+                    disabled={false}
+                    readOnly={false}
+                    rules={{ required: 'This field is required' }}
+                    register={register}
                   />
                 </Box>
               </CardContent>
             </Card>
+
+            <Box>
+              <Button
+                onClick={() => setOpenAddBrandModal(!openAddBrandModal)}
+                endIcon={<FaCirclePlus size={14} />}
+                component="label"
+                // onClick={unitToggle}
+                sx={{
+                  fontSize: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: 'fit-content',
+                  textTransform: 'capitalize',
+                  color: '#3572EF',
+                }}
+              >
+                New Category
+              </Button>
+              <DropdownTreeSelect
+                mode="radioSelect"
+                data={processDataForCategory}
+                onChange={handleValueForCategory}
+              />
+            </Box>
           </Box>
 
           <Box
@@ -341,10 +555,10 @@ const AddProduct = () => {
                     Product Type
                   </Typography> */}
                   <NativeSelect
-                    name="example"
-                    label="Example Select"
-                    errors={errors.example}
-                    options={[{ value: '1', label: 'One' }, { value: '2', label: 'Two' }]}
+                    name="product_type"
+                    label="Product Type"
+                    errors={errors.product_type}
+                    options={productTypesOptions}
                     placeholder="Select an option"
                     defaultValue=""
                     disabled={false}
@@ -594,12 +808,19 @@ const AddProduct = () => {
           </Box>
         </Box>
 
-        <AddUnitTypeModal
-          handleOpenAddUnitType={handleOpenAddUnitType}
-          handleCloseAddUnitType={handleCloseAddUnitType}
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-        />
+        <ConfirmModal
+          openModal={openAddUnitTypeModal}
+          setOpenModal={setOpenAddUnitTypeModal}
+        >
+          <AddUnitTypeModal />
+        </ConfirmModal>
+
+        <ConfirmModal
+          openModal={openAddBrandModal}
+          setOpenModal={setOpenAddBrandModal}
+        >
+          <AddBrandModal />
+        </ConfirmModal>
       </ThemeProvider>
     </DefaultLayout>
   );
