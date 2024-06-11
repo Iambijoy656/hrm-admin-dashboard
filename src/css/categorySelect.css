@@ -1,27 +1,154 @@
-.dropdown {
-    width: 100%;
-    z-index: 100;
-    /*background-color:  red;*/
-  }
-  
-  .dropdown-trigger {
-    width: 100%;
-    border-radius: 8px;
-    z-index: 100;
-  }
-  
-  .infinite-scroll-component {
-    min-width: 250px;
-  }
-  
-  .collapsed,
-  .expanded{
-    font-size: 20px;
-    margin: 0 12px;
-  }
-  
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.top:after,
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.bottom:after{
-    display: none;
-    
-  }
+/* .dropdown {
+  width: 100%;
+}
+
+.dropdown-trigger {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.infinite-scroll-component {
+  min-width: 250px;
+}
+
+.collapsed,
+.expanded {
+  font-size: 20px;
+  margin: 0 12px;
+}
+
+.tree  i,
+.leaf i {
+  height: 20px;
+  width:20px;
+  border-radius: 50%;
+  padding:0  5px;
+}
+
+.tag {
+  background-color: #918888;
+  color: aliceblue;
+  font-size: 14px;
+  padding: 0 10px;
+}
+.tag-remove {
+  margin-left: 5px;
+  color: aliceblue;
+  font-size: 14px;
+}
+
+.search {
+  background-color: #918888;
+  color: #fff;
+  padding: 0 10px;
+}
+
+.react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.top:after,
+.react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.bottom:after {
+  display: none;
+} */
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.tag-remove {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.dropdown .dropdown-content {
+  z-index: 20;
+}
+
+.dropdown,
+.dropdown-trigger {
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+}
+
+.mdl-demo .dropdown-trigger > span:after {
+  font-size: 12px;
+  color: #555;
+  border: none;
+}
+
+.dropdown-content,
+.mdl-demo .tag {
+  color: #555;
+  padding: 5px;
+}
+
+.mdl-demo .search {
+  padding: 5px;
+}
+
+.mdl-demo .toggle {
+  font: normal normal normal 18px/1 'Material Icons';
+  color: #555;
+  white-space: pre;
+  margin-right: 4px;
+}
+.mdl-demo .toggle.expanded,
+.mdl-demo .toggle.collapsed {
+  border: none;
+}
+.mdl-demo .toggle.collapsed::after {
+  cursor: pointer;
+  content: '\25BE';
+  vertical-align: middle;
+}
+
+.mdl-demo .toggle.expanded::after {
+  cursor: pointer;
+  content: '\25B4';
+  vertical-align: middle;
+}
+
+/* checkbox styles */
+.mdl-demo .checkbox-item {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  vertical-align: middle;
+}
+
+.mdl-demo .checkbox-item:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #aaa;
+  transition: all 0.3s ease-in-out;
+}
+
+.mdl-demo .checkbox-item:checked:before {
+  height: 50%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  border-top-style: none;
+  border-right-style: none;
+  border-color: #2196f3;
+}

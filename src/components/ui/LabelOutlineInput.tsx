@@ -1,11 +1,10 @@
-import React from "react";
-import { TextField } from "@mui/material";
+import { TextField } from '@mui/material';
 
 type InputPropsType = {
   errors: any;
   defaultValue: string | number;
-  disabled:boolean;
-  readonly:boolean;
+  disabled: boolean;
+  readonly: boolean;
   label: string;
   name: string;
   register: any;
@@ -19,13 +18,13 @@ export default function LabelOutlineInput({
   errors,
   register,
   disabled,
-  defaultValue='',
+  defaultValue,
   readonly,
   label,
   name,
   fieldID,
   placeholder,
-  rules
+  rules,
 }: InputPropsType) {
   return (
     <>
@@ -37,36 +36,37 @@ export default function LabelOutlineInput({
         autoComplete="on"
         name={name}
         type={type}
+        defaultValue={defaultValue}
         label={label}
         id={fieldID}
         placeholder={placeholder}
         error={!!errors}
-        helperText={errors ? errors.message : ""}
+        helperText={errors ? errors.message : ''}
         sx={{
-          "& .MuiFormLabel-root": {
+          '& .MuiFormLabel-root': {
             fontSize: { xs: '.7rem', md: '.8rem' },
             // fontWeight: 500,
           },
-          "& label.Mui-focused": {
+          '& label.Mui-focused': {
             // color: "gray",
             fontSize: '.9rem',
           },
-          "& .MuiOutlinedInput-root": {
+          '& .MuiOutlinedInput-root': {
             fontSize: { xs: 12, md: '.8rem' },
             // height: { xs: 35, md: 40 },
             // backgroundColor: "#f1f1f1",
-            "&.Mui-focused fieldset": {
+            '&.Mui-focused fieldset': {
               // borderColor: "lightgray",
-              borderWidth: "1px",
+              borderWidth: '1px',
             },
-            "&:hover fieldset":{
+            '&:hover fieldset': {
               // borderColor: "lightgray",
             },
-            "& fieldset span": {
-                // fontSize: { xs: 12, md: 10 },
-              pr: "6px",
+            '& fieldset span': {
+              // fontSize: { xs: 12, md: 10 },
+              pr: '6px',
             },
-            "&.Mui-focused fieldset span": {
+            '&.Mui-focused fieldset span': {
               pr: 2,
             },
           },
