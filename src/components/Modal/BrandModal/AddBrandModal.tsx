@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Options } from '../../../types/Modals';
 import NativeSelect from '../../ui/NativeSelect';
 import TextAreaInput from '../../ui/TextAreaInput';
+import LabelOutlineInput from '../../ui/LabelOutlineInput';
 export default function AddBrandModal() {
   const unitTypesOptions: Options[] = [
     { value: 'Single', label: 'Standard' },
@@ -43,7 +44,7 @@ export default function AddBrandModal() {
         Add Brand
       </Typography>
       <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
-        <NativeSelect
+        {/* <NativeSelect
           name="name"
           label="Name"
           errors={errors.name}
@@ -54,6 +55,25 @@ export default function AddBrandModal() {
           readOnly={false}
           rules={{ required: 'This field is required' }}
           register={register}
+        /> */}
+        <LabelOutlineInput
+          disabled={false}
+          readonly={false}
+          name="name"
+          label={'Name'}
+          fieldID={'name'}
+          defaultValue={''}
+          register={register}
+          type="text"
+          errors={errors?.name}
+          placeholder={' Name'}
+          rules={{
+            required: ' Name is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
         />
       </Box>
 

@@ -1,0 +1,10 @@
+/* jodit-custom.css */
+
+.jodit-toolbar__box, .jodit-toolbar__item {
+    background-color: var(--jd-color-panel) !important;
+}
+  .jodit-wysiwyg, .jodit-container {
+    background-color: var(--jd-color-background-default) !important;
+    border-color: var(--jd-color-border) !important;
+  }
+  

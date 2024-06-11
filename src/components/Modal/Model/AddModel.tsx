@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Options } from '../../../types/Modals';
+import LabelOutlineInput from '../../ui/LabelOutlineInput';
 import NativeSelect from '../../ui/NativeSelect';
 import TextAreaInput from '../../ui/TextAreaInput';
 export default function AddModel() {
@@ -43,17 +44,24 @@ export default function AddModel() {
         Add Brand
       </Typography>
       <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
-        <NativeSelect
-          name="name"
-          label="Name"
-          errors={errors.name}
-          options={unitTypesOptions}
-          placeholder="Select an option"
-          defaultValue=""
+        <LabelOutlineInput
           disabled={false}
-          readOnly={false}
-          rules={{ required: 'This field is required' }}
+          readonly={false}
+          name="name"
+          label={'Name'}
+          fieldID={'name'}
+          defaultValue={''}
           register={register}
+          type="text"
+          errors={errors?.name}
+          placeholder={' Name'}
+          rules={{
+            required: ' Name is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
         />
       </Box>
 
