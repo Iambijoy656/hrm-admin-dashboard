@@ -4,20 +4,21 @@ import Typography from '@mui/material/Typography';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Options } from '../../../types/Modals';
+import LabelOutlineInput from '../../ui/LabelOutlineInput';
 import NativeSelect from '../../ui/NativeSelect';
-import TextAreaInput from '../../ui/TextAreaInput';
 
 export default function AddUnitTypeModal() {
   const unitTypesOptions: Options[] = [
-    { value: 'Single', label: 'Standard' },
-    { value: 'Combo', label: 'Combo' },
-    { value: 'Service', label: 'Service' },
+    { value: 'Piece', label: 'Piece' },
+    { value: 'Kilogram', label: 'Kilogram' },
   ];
 
   type Inputs = {
-    unit_type: string;
-    description: string;
-    status: string;
+    code: string;
+    name: string;
+    base_unit: string;
+    operator:string ,
+    operation_value:string;
   };
 
   const {
@@ -39,23 +40,30 @@ export default function AddUnitTypeModal() {
       >
         Add Unit Type
       </Typography>
-      <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
-        <NativeSelect
-          name="unit_type"
-          label="Unit Type"
-          errors={errors.unit_type}
-          options={unitTypesOptions}
-          placeholder="Select an option"
-          defaultValue=""
+      <Box component={'div'} id="transition-modal-description" sx={{ mt: 3 }}>
+        <LabelOutlineInput
           disabled={false}
-          readOnly={false}
-          rules={{ required: 'This field is required' }}
+          readonly={false}
+          name="code"
+          label={'Code'}
+          fieldID={'name'}
+          defaultValue={''}
           register={register}
+          type="text"
+          errors={errors?.code}
+          placeholder={'Code'}
+          rules={{
+            required: 'Code is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
         />
       </Box>
 
-      <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
-        <TextAreaInput
+      <Box component={'div'} id="transition-modal-description" sx={{ mt: 3 }}>
+        {/* <TextAreaInput
           label={'Select Unit Type'}
           placeholder={'Select a select-unit'}
           defaultValue={''}
@@ -69,14 +77,34 @@ export default function AddUnitTypeModal() {
           rules={{
             required: 'description is required',
           }}
+        /> */}
+
+        <LabelOutlineInput
+          disabled={false}
+          readonly={false}
+          name="name"
+          label={'Name'}
+          fieldID={'name'}
+          defaultValue={''}
+          register={register}
+          type="text"
+          errors={errors?.name}
+          placeholder={' Name'}
+          rules={{
+            required: 'Name is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
         />
       </Box>
 
-      <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
+      <Box component={'div'} id="transition-modal-description" sx={{ mt: 3 }}>
         <NativeSelect
-          name="status"
-          label="Status"
-          errors={errors.status}
+          name="base_unit"
+          label="Base Unit"
+          errors={errors.base_unit}
           options={unitTypesOptions}
           placeholder="Select an option"
           defaultValue=""
@@ -84,6 +112,49 @@ export default function AddUnitTypeModal() {
           readOnly={false}
           rules={{ required: 'This field is required' }}
           register={register}
+        />
+      </Box>
+      <Box component={'div'} id="transition-modal-description" sx={{ mt: 3 }}>
+        <LabelOutlineInput
+          disabled={false}
+          readonly={false}
+          name="operator"
+          label={'Operator'}
+          fieldID={'operator'}
+          defaultValue={''}
+          register={register}
+          type="text"
+          errors={errors?.operator}
+          placeholder={'Operator'}
+          rules={{
+            required: 'Operator is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
+        />
+      </Box>
+      
+        <Box component={'div'} id="transition-modal-description" sx={{ mt: 3 }}>
+        <LabelOutlineInput
+          disabled={false}
+          readonly={false}
+          name="operation_value"
+          label={'Operation Value'}
+          fieldID={'operation_value'}
+          defaultValue={''}
+          register={register}
+          type="text"
+          errors={errors?.operation_value}
+          placeholder={'Operation Value'}
+          rules={{
+            required: 'Operation Value is required',
+            // pattern: {
+            //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+            //   message: 'Invalid email input',
+            // },
+          }}
         />
       </Box>
 

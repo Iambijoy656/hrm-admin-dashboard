@@ -125,7 +125,7 @@ export default function CustomHeader({
           className="text-black dark:text-white drop-shadow-1 dark:drop-shadow-none"
           component={'div'}
           sx={{
-            display: { xs: 'none', sm: 'flex' },
+            display: 'flex' ,
             alignItems: 'center',
             // color: 'white',
             gap: 1,
