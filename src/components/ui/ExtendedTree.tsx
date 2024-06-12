@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, MenuItem } from '@mui/material';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
@@ -23,6 +23,9 @@ export default function ExtendedTree({
   setSelected,
 }: TreeSelectProps) {
   const [expand, setExpend] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState<
+    TreeType | undefined
+  >();
 
   //   const handleSelected=(data:TreeType)=>{
   // const item=
@@ -30,10 +33,10 @@ export default function ExtendedTree({
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <span onClick={() => setExpend(!expand)}>
+        <span className='mx-2 cursor-pointer' onClick={() => setExpend(!expand)}>
           {expand ? <IoIosArrowDown /> : <IoIosArrowUp />}
         </span>
-        <MenuItem
+        {/* <MenuItem
           value={tree?.name_s}
           onClick={() => {
             setSelected(tree);
@@ -41,19 +44,17 @@ export default function ExtendedTree({
           }}
         >
           {tree?.name_s}
-        </MenuItem>
+        </MenuItem> */}
 
-        {/* <FormControlLabel
+        <FormControlLabel
           control={
             <Checkbox
               onClick={() => {
+                setSelectedItem(tree);
                 setSelected(tree);
                 setShowTree(false);
               }}
-              checked={hasExpired == 1}
-              onChange={(e) => {
-                e.target.checked === true ? setHasExpired(1) : setHasExpired(0);
-              }}
+              checked={selectedItem?.id === tree?.id}
               sx={{
                 transform: 'scale(0.8)',
                 '& .MuiSvgIcon-root': { fontSize: 24 },
@@ -66,7 +67,7 @@ export default function ExtendedTree({
               fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
             },
           }}
-        /> */}
+        />
       </Box>
       <Box
         sx={{
