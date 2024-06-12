@@ -2,14 +2,16 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useCallback, useEffect, useState } from 'react';
-import DropdownTreeSelect, { TreeNode } from 'react-dropdown-tree-select';
+import { TreeNode } from 'react-dropdown-tree-select';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 import { Options } from '../../../types/Modals';
 import api from '../../../Utilities/api';
+import '../.././../css/categorySelect.css';
 import LabelOutlineInput from '../../ui/LabelOutlineInput';
 import NativeSelect from '../../ui/NativeSelect';
 import TextAreaInput from '../../ui/TextAreaInput';
-import '../.././../css/categorySelect.css';
+import TreeSelect from '../../ui/TreeSelect';
 
 interface Category {
   id: number;
@@ -28,6 +30,10 @@ export default function AddCategoryModal() {
   const [selectedBranch, setSelectedBranch] = useState(
     localStorage.getItem('branch_id'),
   );
+  const [openTreeSelect, setOpenTreeSelect] = useState<boolean>(false);
+  const [showTree, setShowTree] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+
   const [processDataForCategory, setProcessDataForCategory] = useState<
     Category[]
   >([]);
@@ -123,7 +129,14 @@ export default function AddCategoryModal() {
   }, []);
 
   return (
-    <div>
+    <Box
+      onClick={() => {
+        if (!selectedCategory) {
+          setOpenTreeSelect(false);
+        }
+        setShowTree(false);
+      }}
+    >
       <Typography
         id="transition-modal-title"
         sx={{ fontSize: 18 }}
@@ -192,13 +205,97 @@ export default function AddCategoryModal() {
           }}
         />
       </Box>
-      <Box sx={{ mt: 2 }}>
-        <DropdownTreeSelect
-          className="mdl-demo"
-          // mode="radioSelect"
-          data={processDataForCategory}
-          onChange={handleValueForCategory}
-        />
+      <Box sx={{ position: 'relative', marginY: 1.5 }}>
+        <Box
+          className="hover:border-black dark:hover:border-white border border-[#c4c4c4] dark:border-[#505050] "
+          component={'div'}
+          onClick={(e) => {
+            setShowTree(!showTree);
+            setOpenTreeSelect(true);
+            e.stopPropagation();
+          }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            // border: '1px  solid',
+            width: '100%',
+            borderRadius: 1,
+            marginTop: 1,
+            height: 36,
+            pl: 1.8,
+            pr: 4,
+            py: 0.8,
+            cursor: 'pointer',
+            position: 'relative',
+            // '&:focus-within': {
+            //   borderColor: '#90caf9',
+            // },
+          }}
+        >
+          <Box
+            className="bg-[#ffffff] dark:bg-[#121212]"
+            component={'label'}
+            sx={{
+              transition: '.1s',
+              // px: 0.1,
+              paddingRight: 1.5,
+              fontSize: openTreeSelect ? '.7rem' : '.8rem',
+              position: 'absolute',
+              top: openTreeSelect ? -13 : 4,
+              color: openTreeSelect ? '#1976d2' : '#ffff',
+              fontWeight: openTreeSelect ? 500 : '',
+            }}
+          >
+            Category
+          </Box>
+
+          <Box sx={{ fontSize: '.8rem' }}>
+            {openTreeSelect && selectedCategory?.name_s}
+          </Box>
+
+          <Box
+            component={'span'}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 4,
+            }}
+          >
+            {showTree ? (
+              <MdArrowDropUp
+                size={24}
+                className="text-slate-600 dark:text-white"
+              />
+            ) : (
+              <MdArrowDropDown
+                size={24}
+                className="text-slate-600 dark:text-white"
+              />
+            )}
+          </Box>
+        </Box>
+        {showTree && (
+          <Box
+            className="bg-[#ffffff] dark:bg-[#2f2f2f] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+            sx={{
+              py: 1,
+              paddingLeft: 3,
+              position: 'absolute',
+              zIndex: 10,
+              width: '100%',
+              borderRadius: 1,
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <TreeSelect
+              setShowTree={setShowTree}
+              tree={processDataForCategory}
+              setSelected={setSelectedCategory}
+            />
+          </Box>
+        )}
       </Box>
 
       <Box component={'div'} id="transition-modal-description" sx={{ mt: 2 }}>
@@ -239,6 +336,6 @@ export default function AddCategoryModal() {
           Create
         </Button>
       </Box>
-    </div>
+    </Box>
   );
 }
