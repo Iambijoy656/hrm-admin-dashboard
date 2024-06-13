@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@mui/x-date-pickers": "^7.6.1",
+    "@tanstack/react-query": "^5.45.0",
     "apexcharts": "^3.41.0",
     "axios": "^1.6.8",
     "flatpickr": "^4.6.13",
