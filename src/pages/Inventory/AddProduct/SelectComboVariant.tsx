@@ -42,6 +42,7 @@ type DropdownDataType = {
 
 const SelectComboVariant: React.FC = () => {
   const [selectedValues, setSelectedValues] = useState<number[]>([]);
+  const [selectedObjectValues, setSelectedObjectValues] = useState<number[]>([]);
   const [transformedData, setTransformedData] = useState<DropdownDataType[]>([]);
 
   const fetchInventoryVariant = async (): Promise<VariantType[]> => {
@@ -78,7 +79,6 @@ const SelectComboVariant: React.FC = () => {
     setSelectedValues(event.target.value as number[]);
   };
 
-  console.log(selectedValues)
   return (
     <Box sx={{ p: { xs: 0, md: 1 }, px: { xs: 0, md: 2 } }}>
       <FormControl sx={{ width: '100%' }} size="small">
