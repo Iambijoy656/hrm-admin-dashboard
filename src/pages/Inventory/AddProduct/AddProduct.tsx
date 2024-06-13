@@ -57,10 +57,13 @@ const AddProduct = () => {
     useState<boolean>(false);
   const { mode } = useContext(ThemeContext);
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [titleImage, setTitleImage] = useState<Photo[]>([]);
   const [hasSerial, setHasSerial] = useState(0);
   const [hasBatch, setHasBatch] = useState(0);
   const [hasExpired, setHasExpired] = useState(0);
-  const [disableEcommerce, setDisableEcommerce] = useState(0);
+  const [enableEcommerce, SetEnableEcommerce] = useState(0);
+  const [ecommerceFeatured, SetEcommerceFeatured] = useState(0);
+  const [ecommerceEmbeddedBarcode, SetEcommerceEmbeddedBarcode] = useState(0);
   const [stockOutSell, setStockOutSell] = useState(0);
   const [warrantyType, setWarrantyType] = useState(0);
   const [allUnitType, setAllUnitType] = useState<Options[]>([]);
@@ -111,6 +114,8 @@ const AddProduct = () => {
     sku: string;
     hsn: string;
     unit_type: string;
+    sale_unit: string;
+    purchase_unit: string;
     brand: string;
     product_type: string;
     select_model: string;
@@ -118,7 +123,7 @@ const AddProduct = () => {
     alert_quantity: number;
     opening_stock_quantity: number;
     margin_on_selling_price: number;
-    margin_on_min_selling_price: number;
+    daily_sales_limit: number;
     tax: string;
     tax_method: string;
     measurement_unit: string;
@@ -203,7 +208,7 @@ const AddProduct = () => {
     theme: mode,
     readonly: false,
     minHeight: 300,
-    placeholder: 'Start typing...',
+    placeholder: 'Description typing...',
     // toolbarButtonSize: "small",
     disablePlugins:
       'about,ai-assistant,class-span,inline-popup,fullsize,iframe,powered-by-jodit,print,search,speech-recognize,spellcheck,video',
@@ -418,7 +423,7 @@ const AddProduct = () => {
                     </Button>
                     <NativeSelect
                       name="unit_type"
-                      label="Unit Type"
+                      label="Product Unit"
                       errors={errors.unit_type}
                       options={[
                         { value: '1', label: 'One' },
@@ -466,6 +471,67 @@ const AddProduct = () => {
                         { value: '2', label: 'Two' },
                       ]}
                       placeholder="Select an option"
+                      defaultValue=""
+                      disabled={false}
+                      readOnly={false}
+                      rules={{ required: 'This field is required' }}
+                      register={register}
+                    />
+                  </Box>
+                </CardContent>
+
+                <CardContent
+                  sx={{
+                    // width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2.5,
+                    marginTop: 1,
+                    flexDirection: { xs: 'column', sm: 'row' },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <NativeSelect
+                      name="sale_unit"
+                      label="Sale Unit"
+                      errors={errors.sale_unit}
+                      options={[
+                        { value: 'carton', label: 'Carton' },
+                        { value: 'piece', label: 'Piece' },
+                      ]}
+                      placeholder="Sale Unit"
+                      defaultValue=""
+                      disabled={false}
+                      readOnly={false}
+                      rules={{ required: 'This field is required' }}
+                      register={register}
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <NativeSelect
+                      name="purchase_unit"
+                      label="Purchase Unit"
+                      errors={errors.purchase_unit}
+                      options={[
+                        { value: 'carton', label: 'Carton' },
+                        { value: 'piece', label: 'Piece' },
+                      ]}
+                      placeholder="Purchase Unit"
                       defaultValue=""
                       disabled={false}
                       readOnly={false}
@@ -777,7 +843,7 @@ const AddProduct = () => {
                       register={register}
                       type="text"
                       errors={errors?.margin_on_selling_price}
-                      placeholder={'Alert Quantity'}
+                      placeholder={'Margin On Selling Price'}
                       rules={{
                         required: 'Margin On Selling Price is required',
                         pattern: {
@@ -799,16 +865,16 @@ const AddProduct = () => {
                     <LabelOutlineInput
                       disabled={false}
                       readonly={false}
-                      name="margin_on_min_selling_price"
-                      label={'Margin On Min Selling Price'}
-                      fieldID={'margin_on_min_selling_price'}
+                      name="daily_sales_limit"
+                      label={'Daily Sales Limit'}
+                      fieldID={'daily_sales_limit'}
                       defaultValue={0}
                       register={register}
                       type="text"
-                      errors={errors?.margin_on_min_selling_price}
-                      placeholder={'margin_on_min_selling_price'}
+                      errors={errors?.daily_sales_limit}
+                      placeholder={'Daily Sales Limit'}
                       rules={{
-                        required: 'margin_on_min_selling_price is required',
+                        required: 'daily_sales_limit is required',
                         pattern: {
                           value: /^[0-9]+$/,
                           message: 'Use only number',
@@ -1248,6 +1314,15 @@ const AddProduct = () => {
                 <Box component={'div'} sx={{ mt: 1 }}>
                   <Card>
                     <CardContent>
+                      <Typography
+                        sx={{
+                          fontSize: 16,
+                          pb: 2,
+                        }}
+                      >
+                        Description
+                      </Typography>
+
                       <Controller
                         name="note"
                         control={control}
@@ -1365,6 +1440,40 @@ const AddProduct = () => {
                     flexDirection: { xs: 'column' },
                   }}
                 >
+                  <Typography
+                    sx={{
+                      fontSize: { xs: 13, sm: 14 },
+                      fontWeight: 600,
+                    }}
+                  >
+                    Title Image
+                  </Typography>
+
+                  <ProductImage
+                    photos={titleImage}
+                    setPhotos={setTitleImage}
+                  ></ProductImage>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent
+                  sx={{
+                    // width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    // gap: 2.5,
+                    flexDirection: { xs: 'column' },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: { xs: 13, sm: 14 },
+                      fontWeight: 600,
+                    }}
+                  >
+                    Image Gallery
+                  </Typography>
+
                   <ProductImage
                     photos={photos}
                     setPhotos={setPhotos}
@@ -1427,30 +1536,6 @@ const AddProduct = () => {
                       },
                     }}
                   />
-
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={disableEcommerce == 1}
-                        onChange={(e) => {
-                          e.target.checked === true
-                            ? setDisableEcommerce(1)
-                            : setDisableEcommerce(0);
-                        }}
-                        sx={{
-                          transform: 'scale(0.8)',
-                          '& .MuiSvgIcon-root': { fontSize: 24 },
-                        }}
-                      />
-                    }
-                    label="Disable For Ecommerce"
-                    sx={{
-                      '& .MuiFormControlLabel-label': {
-                        fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
-                      },
-                    }}
-                  />
-
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -1473,6 +1558,89 @@ const AddProduct = () => {
                       },
                     }}
                   />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={enableEcommerce == 1}
+                        onChange={(e) => {
+                          e.target.checked === true
+                            ? SetEnableEcommerce(1)
+                            : SetEnableEcommerce(0);
+                        }}
+                        sx={{
+                          transform: 'scale(0.8)',
+                          '& .MuiSvgIcon-root': { fontSize: 24 },
+                        }}
+                      />
+                    }
+                    label="Enable For Ecommerce"
+                    sx={{
+                      '& .MuiFormControlLabel-label': {
+                        fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
+                      },
+                    }}
+                  />
+
+                  {enableEcommerce == 1 && (
+                    <Box
+                      sx={{
+                        paddingLeft: 2,
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            size="small"
+                            checked={ecommerceFeatured == 1}
+                            onChange={(e) => {
+                              e.target.checked === true
+                                ? SetEcommerceFeatured(1)
+                                : SetEcommerceFeatured(0);
+                            }}
+                            sx={{
+                              transform: 'scale(0.8)',
+                              '& .MuiSvgIcon-root': { fontSize: 24 },
+                            }}
+                          />
+                        }
+                        label=" Featured"
+                        sx={{
+                          '& .MuiFormControlLabel-label': {
+                            fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
+                          },
+                        }}
+                      />
+
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            size="small"
+                            checked={ecommerceEmbeddedBarcode == 1}
+                            onChange={(e) => {
+                              e.target.checked === true
+                                ? SetEcommerceEmbeddedBarcode(1)
+                                : SetEcommerceEmbeddedBarcode(0);
+                            }}
+                            sx={{
+                              transform: 'scale(0.8)',
+                              '& .MuiSvgIcon-root': { fontSize: 24 },
+                            }}
+                          />
+                        }
+                        label="Embedded Barcode"
+                        sx={{
+                          '& .MuiFormControlLabel-label': {
+                            fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
+                          },
+                        }}
+                      />
+                    </Box>
+                  )}
                 </CardContent>
               </Card>
 
@@ -1524,7 +1692,7 @@ const AddProduct = () => {
                         }}
                       />
                     }
-                    label="Has Serial Key By Manufacture"
+                    label="Has Serial Key By Manufacturer"
                     sx={{
                       '& .MuiFormControlLabel-label': {
                         fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
@@ -1559,7 +1727,7 @@ const AddProduct = () => {
                         }}
                       />
                     }
-                    label="Warranty By Purchase"
+                    label="Warranty By Sale"
                     sx={{
                       '& .MuiFormControlLabel-label': {
                         fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
@@ -1582,7 +1750,7 @@ const AddProduct = () => {
                         }}
                       />
                     }
-                    label="Has Serial Key By Manufacture"
+                    label="Warranty By By Manufacturer"
                     sx={{
                       '& .MuiFormControlLabel-label': {
                         fontSize: { xs: '.7rem', md: '.8rem' }, // Set font size for the label text
@@ -1616,7 +1784,7 @@ const AddProduct = () => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                    size='small'
+                      size="small"
                       checked={typeChange?.value == 'Variant'}
                       onChange={(e) => {
                         e.target.checked === true
@@ -1632,7 +1800,7 @@ const AddProduct = () => {
                       }}
                     />
                   }
-                  label="Has Variant"
+                  label="This product Has Variant"
                   sx={{
                     '& .MuiFormControlLabel-label': {
                       fontSize: { xs: '.8rem', md: '.9rem' },
