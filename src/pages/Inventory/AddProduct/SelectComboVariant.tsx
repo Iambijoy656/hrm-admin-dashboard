@@ -75,7 +75,7 @@ const SelectComboVariant: React.FC = () => {
     }
   };
 
-  const removeItemFromVariantList = (id) => {
+  const removeItemFromVariantList = (id:any) => {
     if (addRowInVariant?.includes(id)) {
       // const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
       const updatedRows = addRowInVariant.filter((itemId) => itemId !== id);
@@ -315,7 +315,7 @@ const SelectComboVariant: React.FC = () => {
             </Box>
 
             <Box>
-              <VariantImage
+              {/* <VariantImage
                 rowImage={rowImage}
                 setRowImage={setRowImage}
                 handelUploadData={(e) =>
@@ -324,7 +324,7 @@ const SelectComboVariant: React.FC = () => {
                 // singleRowData={singleRowData}
                 photos={photos}
                 // setPhotos={setPhotos}
-              />
+              /> */}
             </Box>
 
             <Box className="flex justify-end">
